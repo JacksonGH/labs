@@ -1,0 +1,5 @@
+﻿  Source.cpp
+  farr.cpp
+c:\users\gacks\source\repos\project4\project4\farr.cpp(52): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода...
+  Project4.vcxproj -> C:\Users\gacks\source\repos\Project4\Debug\Project4.exe

@@ -1,0 +1,6 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\lab7\lab7\source.cpp(70): warning C4156: удаление массива без использования формы оператора "delete", предусмотренной для массива; подставлена предусмотренная форма оператора
+c:\users\gacks\source\repos\lab7\lab7\source.cpp(70): warning C4154: удаление массива; выполнено преобразование к указателю
+c:\users\gacks\source\repos\lab7\lab7\source.cpp(76): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\gacks\source\repos\lab7\lab7\source.cpp(86): warning C4018: <: несоответствие типов со знаком и без знака
+  Lab7.vcxproj -> C:\Users\gacks\source\repos\Lab7\Debug\Lab7.exe

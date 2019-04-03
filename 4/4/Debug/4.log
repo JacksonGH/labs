@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\4\4\source.cpp(8): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+c:\users\gacks\source\repos\4\4\source.cpp(12): warning C4101: slovo: неиспользованная локальная переменная
+  4.vcxproj -> C:\Users\gacks\source\repos\4\Debug\4.exe

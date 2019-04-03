@@ -1,0 +1,3 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\okp\okp\source.cpp(36): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  okp.vcxproj -> C:\Users\gacks\source\repos\okp\Debug\okp.exe

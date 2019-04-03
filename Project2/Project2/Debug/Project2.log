@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\project2\project2\source.cpp(8): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+c:\users\gacks\source\repos\project2\project2\source.cpp(15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Project2.vcxproj -> C:\Users\gacks\source\repos\Project2\Debug\Project2.exe

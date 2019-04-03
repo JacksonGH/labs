@@ -1,0 +1,7 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\andrew\andrew\source.cpp(11): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\andrew\andrew\source.cpp(30): warning C4473: "scanf_s": передано недостаточно аргументов для строки формата
+  c:\users\gacks\source\repos\andrew\andrew\source.cpp(30): note: заполнители и их параметры ожидают переменное число аргументов в количестве 2, но было предоставлено 1
+  c:\users\gacks\source\repos\andrew\andrew\source.cpp(30): note: отсутствующий вариативный аргумент "2" требуется для строки форматирования "%c"
+  c:\users\gacks\source\repos\andrew\andrew\source.cpp(30): note: этот аргумент используется в качестве размера буфера
+  Andrew.vcxproj -> C:\Users\gacks\source\repos\Andrew\Debug\Andrew.exe

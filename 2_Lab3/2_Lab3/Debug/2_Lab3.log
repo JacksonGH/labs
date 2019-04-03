@@ -1,0 +1,8 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(21): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(35): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(41): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(54): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(159): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\2_lab3\2_lab3\source.cpp(169): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+  2_Lab3.vcxproj -> C:\Users\gacks\source\repos\2_Lab3\Debug\2_Lab3.exe

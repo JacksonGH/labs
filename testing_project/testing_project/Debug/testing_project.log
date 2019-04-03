@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\users\gacks\source\repos\testing_project\testing_project\source.cpp(33): warning C4805: ==: небезопасное смешение типа "int" и типа "bool" в операции
+c:\users\gacks\source\repos\testing_project\testing_project\source.cpp(56): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  testing_project.vcxproj -> C:\Users\gacks\source\repos\testing_project\Debug\testing_project.exe

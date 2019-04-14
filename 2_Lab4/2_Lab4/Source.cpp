@@ -9,9 +9,10 @@ struct Queue {
 	Queue *prev, *next;
 } *beginQueue, *endQueue;
 
+Queue* addBeforeNumFromBegin(Queue *, int , int );
 double calcAvgQueue(Queue *);
-Queue* rmAvgQueue(Queue *, int &);
-double readIntNum();
+void rmAvgQueue(Queue **, Queue **, int &);
+int readIntNum();
 void viewFromBegin(Queue *);
 void viewFromEnd(Queue *);
 
@@ -26,6 +27,7 @@ int main() {
 			" 1 to add a new item\n"
 			" 2 to view all items\n"
 			" 3 to remove all items, that are less than the average\n"
+			" 4 to add elem before number(start from begin queue)\n"
 			" 5 to exit\n"
 			"Enter: "
 			;
@@ -34,12 +36,12 @@ int main() {
 		case 0:
 		{
 			do {
-				cout << "Select the number of stack items: ";
+				cout << "Select the number of queue items: ";
 				choice = readIntNum();
 			} while (choice <= 0);
 
 			int a = -20, b = 20;
-			//Queue *t;
+			
 			Queue *t;
 			while (choice--) {
 				t = new Queue;
@@ -57,7 +59,7 @@ int main() {
 
 			viewFromBegin(beginQueue);
 			system("pause");
-			break;
+ 			break;
 		}
 		case 1:
 		{
@@ -117,11 +119,31 @@ int main() {
 			cout << "Old queue:\n";
 			viewFromBegin(beginQueue);
 
-			Queue *t = beginQueue;
+			//Queue *t = beginQueue;
 			int count = 0;
-			beginQueue = rmAvgQueue(t, count);
+			rmAvgQueue(&beginQueue, &endQueue, count);
 
 			cout << "Delete items: " << count << "\n";
+			cout << "New queue:\n";
+			viewFromBegin(beginQueue);
+			cout << "-------";
+			viewFromEnd(endQueue);
+
+			system("pause");
+			break;
+		}
+		case 4:
+		{
+			cout << "Old queue:\n";
+			viewFromBegin(beginQueue);
+
+			cout << "Add elem:";
+			int add = readIntNum();
+			cout << "After elem:";
+			int after = readIntNum();
+
+			beginQueue = addBeforeNumFromBegin(beginQueue, add, after);
+
 			cout << "New queue:\n";
 			viewFromBegin(beginQueue);
 
@@ -137,7 +159,22 @@ int main() {
 
 	return 0;
 }
-double readIntNum() {
+Queue* addBeforeNumFromBegin(Queue *b, int add, int after) {
+	Queue *t = b, *newElem = new Queue;
+
+	while (t->info != after)
+		t = t->next;
+	if (t != NULL) {
+		newElem->info = add;
+		newElem->next = t->next;
+		t->next = newElem;
+		newElem->prev = t;
+		newElem->next->prev = newElem;
+	}
+
+	return b;
+}
+int readIntNum() {
 	while (1) {
 		int num;
 		cin >> num;
@@ -172,30 +209,35 @@ double calcAvgQueue(Queue *t) {
 	}
 	return (double)sum / count;
 }
-Queue* rmAvgQueue(Queue *t, int &count) {
-	double average = calcAvgQueue(t);
+void rmAvgQueue(Queue **b, Queue **e, int &count) {//!!!кроме начала переопределять и конец
+	double average = calcAvgQueue(*b);
 	cout << "Average value is " << average << "\n";
 
 	Queue *p = new Queue;
 	p->info = 0;
 	p->prev = NULL;
-	p->next = t;
-	t->prev = p;
-	t = p;
+	p->next = *b;
+	(*b)->prev = p;
+	*b = p;
 
-	Queue *prev = t, *t1 = t->next;
+	Queue *t1 = (*b)->next;
 	while (t1 != NULL) {
 		if (t1->info < average) {
-			if (t1->prev != NULL)
+			//if (t1->prev != NULL)
 			t1->prev->next = t1->next;
+			
 			if (t1->next != NULL)
-			t1->next->prev = t1->prev;
+				t1->next->prev = t1->prev;
+			else {
+				*e = t1->prev;
+				t1->prev = NULL;
+			}
 			count++;
 		}
 		t1 = t1->next;
 	}
-	Queue *temp = t;
-	t = t->next;
+	Queue *temp = *b;
+	*b = (*b)->next;
+	(*b)->prev = NULL;
 	delete temp;
-	return t;
 }

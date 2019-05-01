@@ -1,1 +1,3 @@
-﻿  2_Lab5.vcxproj -> C:\Users\gacks\source\repos\2_Lab5\Debug\2_Lab5.exe
+﻿  Source.cpp
+c:\users\gacks\source\repos\2_lab5\2_lab5\source.cpp(117): warning C4018: <=: несоответствие типов со знаком и без знака
+  2_Lab5.vcxproj -> C:\Users\gacks\source\repos\2_Lab5\Debug\2_Lab5.exe

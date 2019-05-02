@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <conio.h>
-#include <ctime>
 #include <math.h> 
 
 using namespace std;
@@ -14,25 +13,28 @@ int readIntNum();
 
 int main()
 {
+	double a, b, e;
 	cout << "Enter interval [a; b]:\n";
-	int a = readIntNum();
-	int b = readIntNum();
-	cout << "e(initial approximation):\n";
-	double e = readDoubleNum();
+	a = readIntNum();
+	b = readIntNum();
+	if (a > b) {
+		swap(a, b);
+	}
+	cout << "Enter e(initial approximation):\n";
+	e = readDoubleNum();
 
 	double *arr = new double[6];
-	int j = 0;
+	int size = 0;
 	char *res = new char[30];
 	for (int i = a; i <= b; i += 2)
 	{
 		if (strcmp((res = newthonMethod(i, e)), "-")) {
-			arr[j++] = atof(res);
+			arr[size++] = atof(res);
 		}
 	}
 	
-	cout << arr[0] << '\n';
-	cout << arr[1] << '\n';
-	cout << arr[2] << '\n';
+	for (int i = 0; i < size; i++)
+		cout << i << " root is " << arr[i] << "\n";
 
 	system("pause");
 }

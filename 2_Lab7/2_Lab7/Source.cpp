@@ -8,13 +8,13 @@ using namespace std;
 
 double readDoubleNum();
 double fun(double);
-double methodAuto2(double, double, double, double);
+double methodAuto2(double, double, double);
 double methodAvg(double, double, double);
 double methodTrap(double, double, double);
 
 int main()
 {
-	double a, b, e, n;
+	double a, b, e;
 	cout << "Enter interval [a; b]:\n";
 	a = readDoubleNum();
 	b = readDoubleNum();
@@ -23,16 +23,15 @@ int main()
 	}
 	cout << "Enter e(initial approximation):\n";
 	e = readDoubleNum();
-	cout << "Enter step n:\n";
-	n = readDoubleNum();
 
-	double res = methodAuto2(n, b, a, e);
+	double res = methodAuto2(b, a, e);
 	cout << "Result is " << res << '\n';
 
 	system("pause");
 }
-double methodAuto2(double n, double b, double a, double e) {
+double methodAuto2(double b, double a, double e) {
 	double f1, f2;
+	int n = 2;
 	do {
 		f1 = methodAvg(n, b, a);
 		f2 = methodTrap(n, b, a);

@@ -7,7 +7,8 @@ using namespace std;
 
 double fun(double);
 double diff_fun(double);
-char *newthonMethod(double i, double e);
+double diff_diff_fun(double);
+double newthonMethod(double i, double e);
 double readDoubleNum();
 int readIntNum();
 
@@ -17,45 +18,44 @@ int main()
 	cout << "Enter interval [a; b]:\n";
 	a = readIntNum();
 	b = readIntNum();
-	if (a > b) {
+	if (a > b)
 		swap(a, b);
-	}
 	cout << "Enter e(initial approximation):\n";
 	e = readDoubleNum();
 
 	double *arr = new double[6];
 	int size = 0;
-	char *res = new char[30];
-	for (int i = a; i <= b; i += 2)
+
+	for (int i = a; i <= b; i += 1)
 	{
-		if (strcmp((res = newthonMethod(i, e)), "-")) {
-			arr[size++] = atof(res);
-		}
+
+		if (fun(i) * fun(i + 1) < 0)
+			arr[size++] = newthonMethod(i, e);
+		else if (fun(i) == 0)
+			arr[size++] = i;
 	}
 	
 	for (int i = 0; i < size; i++)
-		cout << i << " root is " << arr[i] << "\n";
+		cout << i + 1 << " root is " << arr[i] << "\n";
 
 	system("pause");
 }
-char *newthonMethod(double x, double e) {
+double newthonMethod(double x, double e) {
 	double h;
-	int i = 0;
-	char *st = new char[10];
 	do {
 		h = fun(x) / diff_fun(x);
-		if (fabs(h) <= e)
-			return _gcvt(x, 10, st);
 		x -= h;
-	} while (++i < 10);
-	strcpy(st, "-");
-	return st;
+	} while (fabs(h) > e);
+	return x;
 }
 double fun(double x) {
 	return pow(x, 3) - 5 * pow(x, 2) + 12;
 }
 double diff_fun(double x) {
 	return 3 * pow(x, 2) - 10 * x;
+}
+double diff_diff_fun(double x) {
+	return 6 * x - 10;
 }
 double readDoubleNum() {
 	while (1) {

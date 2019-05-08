@@ -1,0 +1,4 @@
+﻿  source.cpp
+c:\users\gacks\source\repos\coursework\coursework\source.cpp(180): warning C4129: .: неизвестная escape-последовательность
+c:\users\gacks\source\repos\coursework\coursework\source.cpp(188): warning C4129: .: неизвестная escape-последовательность
+  coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

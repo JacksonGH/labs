@@ -15,4 +15,7 @@ struct User
 };
 
 int readIntNum();
+double readDoubleNum();
+int readPosIntNum();
+double readPosDoubleNum();
 void doPauseAndCls();

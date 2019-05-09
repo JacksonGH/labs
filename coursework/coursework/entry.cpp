@@ -94,9 +94,9 @@ void coutUsers(User *users, int num) {
 			<< users[i].access << "\n";
 	}
 }
-void insertUser(User newUser) {
+void insertUser(User user) {
 	ofstream fadd(USERS, ios::binary | ios::app);
-	fadd.write((char*)&newUser, sizeof newUser);
+	fadd.write((char*) &user, sizeof user);
 	fadd.close();
 }
 bool readAllUsers(User *users, int &num) {

@@ -5,6 +5,8 @@
 
 using namespace std;
 
+const string ACCESS_DENIED = "You get access to the resource as soon as the administrator confirms your account\n";
+
 const int LOGIN = 1;
 const int REGISTER = 2;
 

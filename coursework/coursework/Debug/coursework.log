@@ -1,6 +1,3 @@
-﻿  source.cpp
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(207): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(222): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(224): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(287): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+﻿  entry.cpp
+c:\users\gacks\source\repos\coursework\coursework\entry.cpp(142): warning C4129: .: неизвестная escape-последовательность
   coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

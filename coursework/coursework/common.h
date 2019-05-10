@@ -18,7 +18,8 @@ const int NOT_AVAILABLE = 0;
 struct User
 {
 	string login;
-	string pass;
+	//string pass;
+	unsigned long pass;
 	int role = ROLE_USER;
 	bool access = NOT_AVAILABLE;
 };

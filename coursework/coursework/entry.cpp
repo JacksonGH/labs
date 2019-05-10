@@ -29,6 +29,12 @@ int loginUser(User *user) {
 		if (users[i].login != user->login) continue;
 
 		if (users[i].pass == user->pass) {
+			if (users[i].access == NOT_AVAILABLE) {
+				cout << ACCESS_DENIED;
+				doPauseAndCls();
+				return 1;
+			}
+
 			cout << "Login successful.\n";
 			user->role = users[i].role;
 			user->access = users[i].access;
@@ -64,7 +70,7 @@ int registerUser(User *user) {
 	cout << "Successful registration.\n";
 	doPauseAndCls();
 
-	cout << "You get access to the resource as soon as the administrator confirms your account\n";
+	cout << ACCESS_DENIED;
 
 	return 0;
 }
@@ -96,7 +102,8 @@ void getLoginAndPass(User *user) {
 		cout << '\n';
 		strPass = pass;
 	} while (!isValidPass(strPass));
-	user->pass = strPass;
+	hash <string> hash;
+	user->pass = hash(strPass);
 }
 void coutUsers(User *users, int num) {
 	for (int i = 0; i < num; i++) {

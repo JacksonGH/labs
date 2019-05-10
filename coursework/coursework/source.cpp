@@ -21,13 +21,19 @@ struct Worker {
 	int rate;
 };
 
+//user
+int userDo(User *);
+void viewAllWorkers();
+void coutWorkers(Worker *, int);
 void coutWorker(Worker);
+
+//another
 int addWorker();
 Worker editEnterWorker(Worker);
 int getNowYear();
 bool isValidDate(double);
 bool isValidFIO(string);
-string getWorkerFio();
+string getWorkerFIO();
 double getWorkerDate();
 Worker getWorkerInfo();
 void insertWorker(Worker);
@@ -56,29 +62,76 @@ int main()
 		}
 	}
 	system("pause");*/
-
+	
+	/* add worker
 	if (addWorker() == 0) {
 		cout << "SUcessssssssss";
 	}
-	system("pause");
+	system("pause");*/
 
-
+	/* cout all users
 	User *users = new User[MAX_ARRAY_SIZE];
 	int num = 0;
 	readAllUsers(users, num);
 	coutUsers(users, num);
-	system("pause");
+	system("pause");*/
+
+	string fio = getWorkerFIO();
 
 	int choice;
-	while (entry(choice));
+	User *user = new User;
+	while (entry(choice, user));
 
 	if (choice == REGISTER) {
 		system("pause");
 		return 0;
 	}
 
+	//new module(user)
+	while(userDo(user));
+
 	system("pause");
 	return 0;
+}
+//user
+int userDo(User *user) {
+	int choice;
+	while (1) {
+		cout << "Login: " << user->login << "\n" <<
+			"Choose what you want:\n"
+			" 1.view all data about workers\n"
+			" 2.calculate the wages of all employees for a certain period of time\n"
+			" 3.search data about workers\n"
+			" 4.sort data about workers\n";
+			" 0.exit\n";
+		choice = readIntNum();
+		system("cls");
+
+		switch (choice) {
+		case 0:
+			return 0;
+		case 1: 
+			viewAllWorkers();
+			doPauseAndCls();
+			break;
+		default:
+			cout << "Unknown option: " << choice << "\n";
+		}
+	}
+}
+void viewAllWorkers() {
+	Worker *worker = new Worker[MAX_ARRAY_SIZE];
+	int num = 0;
+	readAllWorkers(worker, num);
+	coutWorkers(worker, num);
+}
+void coutWorkers(Worker *workers, int num) {
+	for (int i = 0; i < num; i++)
+		cout << "FIO: " << workers[i].fio << "\n"
+		<< "Personal number: " << workers[i].pers_num << "\n"
+		<< "Date: " << workers[i].date << "\n"
+		<< "Work hours: " << workers[i].work_hours << "\n"
+		<< "Rate: " << workers[i].rate << "\n";
 }
 void coutWorker(Worker worker) {
 	cout << "FIO: " << worker.fio << "\n"
@@ -87,6 +140,8 @@ void coutWorker(Worker worker) {
 		<< "Work hours: " << worker.work_hours << "\n"
 		<< "Rate: " << worker.rate << "\n";
 }
+
+//another
 int addWorker() {
 	Worker worker = getWorkerInfo();
 
@@ -148,13 +203,12 @@ Worker editEnterWorker(Worker worker) {
 		choice = readIntNum();
 		system("cls");
 
-		if (choice == 0)
-			return worker;
-
 		switch (choice) {
+		case 0:
+			return worker;
 		case 1:
 			cout << "Enter FIO(! as a separator between the lines, use TAB):\n";
-			worker.fio = getWorkerFio();
+			worker.fio = getWorkerFIO();
 			system("cls");
 			break;
 		case 2:
@@ -178,7 +232,7 @@ Worker editEnterWorker(Worker worker) {
 			system("cls");
 			break;
 		default:
-			cout << "Unknown option.\n";
+			cout << "Unknown option: " << choice << "\n";
 		}
 	}
 }
@@ -218,13 +272,13 @@ bool isValidFIO(string str) {
 	- Petrov-Ivanov Ivan Aleksondrovich
 	- Petrov-Ivanov I A
 	*/
-	regex regular("^[A-Z][a-z]{0,18}(-[A-Z][a-z]{0,18})?\t{1}[A-Z][a-z]{0,18}(\t{1}[A-Z][a-z]{0,18})?$");
+	regex regular("^[A-Z][a-z]{0,18}(-[A-Z][a-z]{0,18})? {1}[A-Z][a-z]{0,18}( {1}[A-Z][a-z]{0,18})?$");
 	bool valid = std::regex_match(str.c_str(), result, regular);
 	if (!valid)
-		cout << "FIO must be a string, which can contain minimum surname and name(! as a separator between the lines, use TAB).\n";
+		cout << "FIO must be a string, which can contain minimum surname and name.\n";
 	return valid;
 }
-string getWorkerFio() {
+string getWorkerFIO() {
 	string fio;
 	do {
 		getline(cin, fio);
@@ -241,8 +295,8 @@ double getWorkerDate() {
 Worker getWorkerInfo() {
 	Worker worker;
 	
-	cout << "Enter FIO(! as a separator between the lines, use TAB):\n";
-	worker.fio = getWorkerFio();
+	cout << "Enter FIO:\n";
+	worker.fio = getWorkerFIO();
 
 	cout << "Enter personal number:\n";
 	worker.pers_num = readPosIntNum();

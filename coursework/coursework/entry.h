@@ -10,20 +10,14 @@ using namespace std;
 const int LOGIN = 1;
 const int REGISTER = 2;
 
-const int ROLE_ADMIN = 1;
-const int ROLE_USER = 0;
+int loginUser(User *);
+int registerUser(User *);
+int entry(int &, User *);
 
-const int AVAILABLE = 1;
-const int NOT_AVAILABLE = 0;
-
-int loginUser();
-int registerUser();
-int entry(int&);
-
-User getLoginAndPass();
+void getLoginAndPass(User *);
 
 bool readAllUsers(User *, int &);
-void insertUser(User);
+void insertUser(User *);
 
 void coutUsers(User *, int);
 

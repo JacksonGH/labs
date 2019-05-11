@@ -54,28 +54,13 @@ int main()
 	coutUsers(users, num);
 	system("pause");*/
 
-	/*int choice;
-	User *user = new User;
-	entry(choice, user);
-	system("pause");*/
-
-	/*hash <std::string> hash;
-	string passwordGuess = "qwerty";
-	string passwordGuess1 = "qwerty1";
-	unsigned long hashedPasswordGuess = hash(passwordGuess);
-	cout << hashedPasswordGuess << '\n';
-	cout << hash(passwordGuess1) << '\n';
-	cout << hash("qwerty2") << '\n';
-	system("pause");*/
 
 	int choice;
 	User *user = new User;
-	while (entry(choice, user));
+	while (authentication(choice, user));
 
-	if (choice == REGISTER) {
-		system("pause");
+	if (choice == REGISTER)
 		return 0;
-	}
 
 	//new module(user)
 	while(userDo(user));

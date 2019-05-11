@@ -1,6 +1,6 @@
 #include "entry.h"
 
-int entry(int &choice, User *user) {
+int authentication(int &choice, User *user) {
 	while (1) {
 		cout << "Choose what you want:\n"
 			" 1.login\n"
@@ -71,6 +71,7 @@ int registerUser(User *user) {
 	doPauseAndCls();
 
 	cout << ACCESS_DENIED;
+	doPauseAndCls();
 
 	return 0;
 }

@@ -10,9 +10,9 @@ const string ACCESS_DENIED = "You get access to the resource as soon as the admi
 const int LOGIN = 1;
 const int REGISTER = 2;
 
+int authentication(int &, User *);
 int loginUser(User *);
 int registerUser(User *);
-int entry(int &, User *);
 
 void getLoginAndPass(User *);
 

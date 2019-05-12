@@ -1,9 +1,10 @@
 #include <iostream>
 #include <conio.h>
-#include "entry.h"
+#include "auth.h"
 #include <time.h>
 #include <regex>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -21,13 +22,16 @@ struct Worker {
 	int rate;
 };
 
+//modules
+int mainApp(User *);
 //user
-int userDo(User *);
+int userApp(User *);
 void viewAllWorkers();
 void coutWorkers(Worker *, int);
 void coutWorker(Worker);
 
 //another
+int workersFixture();
 int addWorker();
 Worker editEnterWorker(Worker);
 int getNowYear();
@@ -40,36 +44,56 @@ void insertWorker(Worker);
 bool readAllWorkers(Worker *, int &);
 
 int main()
-{	
-	//add worker
-	/*if (addWorker() == 0) {
-		cout << "SUcessssssssss";
-	}
-	system("pause");*/
-
-	//cout all users
+{
+	//cout users
 	/*User *users = new User[MAX_ARRAY_SIZE];
-	int num = 0;
+	int num;
 	readAllUsers(users, num);
-	coutUsers(users, num);
-	system("pause");*/
+	coutUsers(users, num);*/
 
+	char str[] = "new str";
+	cout << str << endl;
+	system("pause");
 
-	int choice;
+	//add worker
+	if (workersFixture() == 0) cout << "Succeesss";
+	system("pause");
+
+	//auth
+	/*int choice;
 	User *user = new User;
 	while (authentication(choice, user));
 
-	if (choice == REGISTER)
-		return 0;
+	if (choice == EXIT_OPTION || choice == REGISTER)
+		return 0;*/
+	
+	//test
+	User *user = new User;
+	user->access = false;
+	user->role = 0;
+	user->login = "TestUser";
+	hash <string> hash;
+	user->pass = hash("TestPass" + SALT);
 
 	//new module(user)
-	while(userDo(user));
+	while(mainApp(user));
 
-	system("pause");
+	_getch(); _getch();
 	return 0;
 }
+//admin
+int adminApp(User *user) {
+	return EXIT_OPTION;
+}
+//modules
+int mainApp(User *user) {
+	if (user->role == ROLE_ADMIN)
+		return adminApp(user);
+
+	return userApp(user);
+}
 //user
-int userDo(User *user) {
+int userApp(User *user) {
 	int choice;
 	while (1) {
 		cout << "Login: " << user->login << '\n' <<
@@ -83,9 +107,9 @@ int userDo(User *user) {
 		system("cls");
 
 		switch (choice) {
-		case 0:
-			return 0;
-		case 1: 
+		case EXIT_OPTION:
+			return EXIT_OPTION;
+		case 1:
 			viewAllWorkers();
 			doPauseAndCls();
 			break;
@@ -101,12 +125,22 @@ void viewAllWorkers() {
 	coutWorkers(worker, num);
 }
 void coutWorkers(Worker *workers, int num) {
-	for (int i = 0; i < num; i++)
-		cout << "FIO: " << workers[i].fio << '\n'
-		<< "Personal number: " << workers[i].pers_num << '\n'
-		<< "Date: " << workers[i].date << '\n'
-		<< "Work hours: " << workers[i].work_hours << '\n'
-		<< "Rate: " << workers[i].rate << '\n';
+	cout << left /*<< setw(80) << "FIO" << '\n'*/
+		<< setw(18) << "Personal Number"
+		<< setw(10) << "Date"
+		<< setw(13) << "Work hours"
+		<< setw(10) << "Rate"
+		<< '\n';
+	cout << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+
+	for (int i = 0; i < num; i++) {
+		cout << setw(80) << workers[i].fio << '\n'
+			<< setw(18) << workers[i].pers_num
+			<< setw(10) << workers[i].date
+			<< setw(13) << workers[i].work_hours
+			<< setw(10) << workers[i].rate << '\n'
+			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+	}
 }
 void coutWorker(Worker worker) {
 	cout << "FIO: " << worker.fio << '\n'
@@ -117,6 +151,43 @@ void coutWorker(Worker worker) {
 }
 
 //another
+int workersFixture() {
+	int num = 6;
+	Worker *workers = new Worker[num];
+	string arr_fio[] = {
+		"Andrew Brown",
+		"Pavel Petrov",
+		"Ivannivannivann",
+		"Ivan I P",
+		"Ivan Ivanovich I",
+		"New Try"
+	};
+
+	int numFromFile;
+	Worker *workersFromFile = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workersFromFile, numFromFile);
+	for (int i = 0; i < num; i++) {
+		workers[i].fio = arr_fio[i];
+		workers[i].date = 2019.6;
+		workers[i].pers_num = (i + 1) * 100;
+		workers[i].work_hours = i + 100;
+		workers[i].rate = i + 10;
+
+		if (workersFromFile[i].pers_num == workers[i].pers_num && workersFromFile[i].fio != workers[i].fio) {
+			cout << "You cannot create records with the same personal number and differecnts FIO.\n";
+			doPauseAndCls();
+			return 1;
+		}
+		if (workersFromFile[i].pers_num == workers[i].pers_num && workersFromFile[i].date == workers[i].date) {
+			cout << "You cannot create records with the same date for one worker.\n";
+			doPauseAndCls();
+			return 1;
+		}
+		insertWorker(workers[i]);
+	}
+
+	return 0;
+}
 int addWorker() {
 	Worker worker = getWorkerInfo();
 
@@ -125,12 +196,12 @@ int addWorker() {
 	readAllWorkers(workers, num);
 
 	for (int i = 0; i < num; i++) {
-		if (workers[i].pers_num == worker.pers_num && workers[i].fio == worker.fio) {
+		if (workers[i].pers_num == worker.pers_num && workers[i].fio != worker.fio) {
 			cout << "You cannot create records with the same personal number and differecnts FIO.\n";
 			doPauseAndCls();
 			return 1;
 		}
-		if (workers[i].date == worker.date) {
+		if (workers[i].pers_num == worker.pers_num && workers[i].date == worker.date) {
 			cout << "You cannot create records with the same date for one worker.\n";
 			doPauseAndCls();
 			return 1;
@@ -177,10 +248,10 @@ Worker editEnterWorker(Worker worker) {
 		system("cls");
 
 		switch (choice) {
-		case 0:
+		case EXIT_OPTION:
 			return worker;
 		case 1:
-			cout << "Enter FIO(! as a separator between the lines, use TAB):\n";
+			cout << "Enter FIO:\n";
 			worker.fio = getWorkerFIO();
 			system("cls");
 			break;
@@ -286,7 +357,18 @@ Worker getWorkerInfo() {
 	return worker;
 }
 void insertWorker(Worker worker) {
-	ofstream fadd(WORKERS, ios::binary | ios::app);
+	ofstream fadd(WORKERS, ios::binary|ios::app);
+	int a = sizeof(worker);
+	int a1 = sizeof(worker.fio);
+	int length = worker.fio.length();
+	int a2 = sizeof(worker.pers_num);
+	int a3 = sizeof(worker.date);
+	int a4 = sizeof(worker.work_hours);
+	int a5 = sizeof(worker.rate);
+	char * a6 = (char*) &worker;
+
+	//replace(worker.fio.begin(), worker.fio.end(), ' ', '_');
+
 	fadd.write((char*) &worker, sizeof worker);
 	fadd.close();
 }
@@ -300,11 +382,13 @@ bool readAllWorkers(Worker *workers, int &num) {
 	else {
 		while (!fin.eof()) {
 			fin.read((char*)&workers[m], sizeof workers[m]);
+			//replace(workers[m].fio.begin(), workers[m].fio.end(), ' ', '_');
 			m++;
 		}
 		fin.close();
 		m--;
 	}
 	num = m;
+
 	return 0;
 }

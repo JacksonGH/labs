@@ -55,6 +55,6 @@ double readPosDoubleNum() {
 	return num;
 }
 void doPauseAndCls() {
-	system("pause");
+	_getch();  _getch();
 	system("cls");
 }

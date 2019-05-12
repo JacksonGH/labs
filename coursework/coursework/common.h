@@ -15,6 +15,8 @@ const int ROLE_USER = 0;
 const int AVAILABLE = 1;
 const int NOT_AVAILABLE = 0;
 
+const int EXIT_OPTION = 0;
+
 struct User
 {
 	string login;

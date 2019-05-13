@@ -1,6 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "auth.h"
 
-int authentication(int &choice, User *user) {
+int auth(int &choice, User *user) {
 	while (1) {
 		cout << "Choose what you want:\n"
 			" 1.login\n"
@@ -13,8 +14,12 @@ int authentication(int &choice, User *user) {
 		{
 		case LOGIN:
 			return loginUser(user);
-		case REGISTER:
-			return registerUser(user);
+		case REGISTER: 
+		{
+			int res = registerUser(user);
+			system("cls");//doPauseAndCls();
+			return res;
+		}
 		case EXIT_OPTION:
 			return EXIT_OPTION;
 		}
@@ -32,7 +37,7 @@ int loginUser(User *user) {
 	}
 
 	for (int i = 0; i < num; i++) {
-		if (users[i].login != user->login) continue;
+		if (strcmp(users[i].login, user->login)) continue;
 
 		if (users[i].pass == user->pass) {
 			if (users[i].access == NOT_AVAILABLE) {
@@ -65,7 +70,7 @@ int addUser(User *user) {
 	readAllUsers(users, num);
 
 	for (int i = 0; i < num; i++) {
-		if (users[i].login == user->login) {
+		if (!strcmp(users[i].login, user->login)) {
 			cout << "Login already taken.\n";
 			doPauseAndCls();
 			return 1;
@@ -76,7 +81,7 @@ int addUser(User *user) {
 	return 0;
 }
 int registerUser(User *user) {
-	if (addUser(user) != 1) {
+	if (addUser(user) != 0) {
 		return 1;
 	}
 	cout << "Successful registration.\n";
@@ -90,11 +95,10 @@ int registerUser(User *user) {
 void getLoginAndPass(User *user) {
 	cout << "Enter login:\n";
 	do {
-		getline(cin, user->login);
+		cin.getline(user->login, sizeof user->login);
 	} while (!isValidLogin(user->login));
 
 	char t, *pass = new char[MAX_STR_SIZE];
-	string strPass;
 	cout << "Enter password:\n";
 	do {
 		for (int i = 0;;) {
@@ -113,10 +117,9 @@ void getLoginAndPass(User *user) {
 			}
 		}
 		cout << '\n';
-		strPass = pass;
-	} while (!isValidPass(strPass));
+	} while (!isValidPass(pass));
 	hash <string> hash;
-	user->pass = hash(strPass + SALT);
+	user->pass = hash(pass + SALT);
 }
 void coutUsers(User *users, int num) {
 	cout << left << setw(20) << "Login"
@@ -160,18 +163,18 @@ bool readAllUsers(User *users, int &num) {
 
 	return 0;
 }
-bool isValidLogin(string str) {
+bool isValidLogin(char *str) {
 	cmatch result;
 	regex regular("^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$");
-	bool valid = std::regex_match(str.c_str(), result, regular);
+	bool valid = std::regex_match(str, result, regular);
 	if (!valid)
 		cout << "Login must be a string(2-20 characters long), which can contain letters or numbers, the first character must be a letter.\n";
 	return valid;
 }
-bool isValidPass(string str) {
+bool isValidPass(char *str) {
 	cmatch result;
 	regex regular("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_]{6,20}");
-	bool valid = std::regex_match(str.c_str(), result, regular);
+	bool valid = std::regex_match(str, result, regular);
 	if (!valid)
 		cout << "Password must be a string, 6-20 characters long, which can contain letters, numbers or an underscore(! must contain at least uppercase letter, lowercase letter and number).\n";
 	return valid;

@@ -14,7 +14,7 @@ const int REGISTER = 2;
 
 const string SALT = "kasd83mfds";
 
-int authentication(int &, User *);
+int auth(int &, User *);
 int loginUser(User *);
 int registerUser(User *);
 
@@ -25,5 +25,5 @@ void insertUser(User *);
 
 void coutUsers(User *, int);
 
-bool isValidLogin(string);
-bool isValidPass(string);
+bool isValidLogin(char *);
+bool isValidPass(char *);

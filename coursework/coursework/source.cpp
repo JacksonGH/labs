@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <conio.h>
 #include "auth.h"
@@ -15,11 +16,11 @@ const int EDIT = 2;
 const int CANCEL = 3;
 
 struct Worker {
-	string fio;
+	char fio[MAX_STR_SIZE];
 	int pers_num;
 	double date;
 	int work_hours;
-	int rate;
+	double rate;
 };
 
 //modules
@@ -36,8 +37,8 @@ int addWorker();
 Worker editEnterWorker(Worker);
 int getNowYear();
 bool isValidDate(double);
-bool isValidFIO(string);
-string getWorkerFIO();
+bool isValidFIO(char *);
+char *getWorkerFIO();
 double getWorkerDate();
 Worker getWorkerInfo();
 void insertWorker(Worker);
@@ -51,27 +52,23 @@ int main()
 	readAllUsers(users, num);
 	coutUsers(users, num);*/
 
-	char str[] = "new str";
-	cout << str << endl;
-	system("pause");
-
-	//add worker
-	if (workersFixture() == 0) cout << "Succeesss";
-	system("pause");
+	//add workers 
+	//if (workersFixture() == 0) cout << "Succeesss";
+	//system("pause");
 
 	//auth
 	/*int choice;
 	User *user = new User;
-	while (authentication(choice, user));
+	while (auth(choice, user));
 
-	if (choice == EXIT_OPTION || choice == REGISTER)
+	if (choice == EXIT_OPTION)
 		return 0;*/
-	
+
 	//test
 	User *user = new User;
 	user->access = false;
 	user->role = 0;
-	user->login = "TestUser";
+	strcpy(user->login, "TestUser");
 	hash <string> hash;
 	user->pass = hash("TestPass" + SALT);
 
@@ -101,7 +98,8 @@ int userApp(User *user) {
 			" 1.view all data about workers\n"
 			" 2.calculate the wages of all employees for a certain period of time\n"
 			" 3.search data about workers\n"
-			" 4.sort data about workers\n";
+			" 4.sort data about workers\n"
+			" 5.logout(back to auth)\n"
 			" 0.exit\n";
 		choice = readIntNum();
 		system("cls");
@@ -113,8 +111,16 @@ int userApp(User *user) {
 			viewAllWorkers();
 			doPauseAndCls();
 			break;
+		case 5: 
+		{
+			int choice;
+			User *user = new User;
+			while (auth(choice, user));
+			return EXIT_OPTION;
+		}
 		default:
 			cout << "Unknown option: " << choice << '\n';
+			doPauseAndCls();
 		}
 	}
 }
@@ -125,22 +131,19 @@ void viewAllWorkers() {
 	coutWorkers(worker, num);
 }
 void coutWorkers(Worker *workers, int num) {
-	cout << left /*<< setw(80) << "FIO" << '\n'*/
-		<< setw(18) << "Personal Number"
+	cout << left << setw(18) << "Personal Number"
 		<< setw(10) << "Date"
 		<< setw(13) << "Work hours"
 		<< setw(10) << "Rate"
-		<< '\n';
-	cout << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+		<< '\n' << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < num; i++)
 		cout << setw(80) << workers[i].fio << '\n'
 			<< setw(18) << workers[i].pers_num
 			<< setw(10) << workers[i].date
 			<< setw(13) << workers[i].work_hours
 			<< setw(10) << workers[i].rate << '\n'
 			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
-	}
 }
 void coutWorker(Worker worker) {
 	cout << "FIO: " << worker.fio << '\n'
@@ -162,12 +165,16 @@ int workersFixture() {
 		"Ivan Ivanovich I",
 		"New Try"
 	};
+	double arr_date[] = {
+		2019.5, 2019.4, 2019.3, 2019.2, 2019.1,
+		2018.12, 2018.11, 2018.10, 2018.09, 2018.08,
+	};
 
 	int numFromFile;
 	Worker *workersFromFile = new Worker[MAX_ARRAY_SIZE];
 	readAllWorkers(workersFromFile, numFromFile);
-	for (int i = 0; i < num; i++) {
-		workers[i].fio = arr_fio[i];
+	for (int i = 0; i < num * 10; i++) {
+		strcpy(workers[i].fio, arr_fio[i].c_str());
 		workers[i].date = 2019.6;
 		workers[i].pers_num = (i + 1) * 100;
 		workers[i].work_hours = i + 100;
@@ -252,7 +259,7 @@ Worker editEnterWorker(Worker worker) {
 			return worker;
 		case 1:
 			cout << "Enter FIO:\n";
-			worker.fio = getWorkerFIO();
+			strcpy(worker.fio, getWorkerFIO());
 			system("cls");
 			break;
 		case 2:
@@ -307,25 +314,18 @@ bool isValidDate(double date) {
 
 	return true;
 }
-bool isValidFIO(string str) {
+bool isValidFIO(char *str) {
 	cmatch result;
-	/*
-	Valid FIO:
-	- Petrov-Ivanov Ivan
-	- Petrov-Ivanov I
-	- Petrov-Ivanov Ivan Aleksondrovich
-	- Petrov-Ivanov I A
-	*/
-	regex regular("^[A-Z][a-z]{0,20}(-[A-Z][a-z]{0,20})? {1}[A-Z][a-z]{0,20}( {1}[A-Z][a-z]{0,20})?$");
-	bool valid = std::regex_match(str.c_str(), result, regular);
+	regex regular("^[A-Z][a-z]{0,18}(-[A-Z][a-z]{0,18})? {1}[A-Z][a-z]{0,18}( {1}[A-Z][a-z]{0,18})?$");
+	bool valid = std::regex_match(str, result, regular);
 	if (!valid)
-		cout << "FIO must be a string, which can contain minimum surname and name(word cannot be more than 20, if the surname is composite then 40).\n";
+		cout << "FIO must be a string, which can contain minimum surname and name(word cannot be more than 19, if the surname is compound then 38 excluding hyphens).\n";
 	return valid;
 }
-string getWorkerFIO() {
-	string fio;
+char *getWorkerFIO() {
+	char fio[MAX_STR_SIZE];
 	do {
-		getline(cin, fio);
+		cin.getline(fio, sizeof fio);
 	} while (!isValidFIO(fio));
 	return fio;
 }
@@ -340,7 +340,7 @@ Worker getWorkerInfo() {
 	Worker worker;
 	
 	cout << "Enter FIO:\n";
-	worker.fio = getWorkerFIO();
+	strcpy(worker.fio, getWorkerFIO());
 
 	cout << "Enter personal number:\n";
 	worker.pers_num = readPosIntNum();
@@ -358,17 +358,6 @@ Worker getWorkerInfo() {
 }
 void insertWorker(Worker worker) {
 	ofstream fadd(WORKERS, ios::binary|ios::app);
-	int a = sizeof(worker);
-	int a1 = sizeof(worker.fio);
-	int length = worker.fio.length();
-	int a2 = sizeof(worker.pers_num);
-	int a3 = sizeof(worker.date);
-	int a4 = sizeof(worker.work_hours);
-	int a5 = sizeof(worker.rate);
-	char * a6 = (char*) &worker;
-
-	//replace(worker.fio.begin(), worker.fio.end(), ' ', '_');
-
 	fadd.write((char*) &worker, sizeof worker);
 	fadd.close();
 }
@@ -382,7 +371,6 @@ bool readAllWorkers(Worker *workers, int &num) {
 	else {
 		while (!fin.eof()) {
 			fin.read((char*)&workers[m], sizeof workers[m]);
-			//replace(workers[m].fio.begin(), workers[m].fio.end(), ' ', '_');
 			m++;
 		}
 		fin.close();

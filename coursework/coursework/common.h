@@ -19,7 +19,7 @@ const int EXIT_OPTION = 0;
 
 struct User
 {
-	string login;
+	char login[MAX_STR_SIZE];
 	//string pass;
 	unsigned long pass;
 	int role = ROLE_USER;

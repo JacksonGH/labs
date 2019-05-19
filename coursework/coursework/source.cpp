@@ -17,6 +17,9 @@ const int CONFIRM = 1;
 const int EDIT = 2;
 const int CANCEL = 3;
 
+double TAX = 12;
+int OVERTIME = 144;
+
 struct Date {
 	int year;
 	int month;
@@ -30,8 +33,19 @@ struct Worker {
 	double rate;
 };
 
+struct Salary {
+	char fio[MAX_STR_SIZE];
+	int pers_num;
+	double salary_per_month;
+	double salary_per_range = 0;
+};
+
 //modules
 int mainApp(User *);
+double getWorkerSalary(Worker);
+void calcAndCoutSalariesForRange(Worker *, int, char *);
+void searchWorkers(Worker *, int, int);
+void sortWorkers(Worker *, int, int);
 //user
 int userApp(User *);
 void viewAllWorkers();
@@ -39,6 +53,8 @@ void coutWorkers(Worker *, int);
 void coutWorker(Worker);
 
 //another
+char *getRange();
+bool isValidRange(char *);
 int workersFixture();
 int addWorker();
 Worker editEnterWorker(Worker);
@@ -59,12 +75,11 @@ int main()
 	readAllUsers(users, num);
 	coutUsers(users, num);*/
 
-	//add workers 
-	//if (workersFixture() == 0) cout << "Succeesss";
-	//system("pause");
+	//getRange();
 
-	getWorkerDate();
-	addWorker();
+	//add workers 
+	/*if (workersFixture() == 0) cout << "Succeesss";
+	system("pause");*/
 
 	//auth
 	/*int choice;
@@ -99,6 +114,217 @@ int mainApp(User *user) {
 
 	return userApp(user);
 }
+double getWorkerSalary(Worker worker) {
+	int overtime = 0;
+	if (worker.work_hours > OVERTIME) {
+		overtime = worker.work_hours - OVERTIME;
+		worker.work_hours = OVERTIME;
+	}
+
+	return worker.rate * (1 - TAX / 100) * (worker.work_hours + overtime * 2);
+}
+void calcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) {
+	Salary *salaries = new Salary[MAX_STR_SIZE];
+	int num_salaries = 0;
+
+	bool flag;
+	for (int i = 0; i < num_workers; i++) {
+		if (atof(workers[i].date) <= atof(range))
+			continue;
+
+		flag = false;
+		for (int j = 0; j < num_salaries; j++) {
+			if (salaries[j].pers_num == workers[i].pers_num) {
+				flag = true;
+				salaries[j].salary_per_range += getWorkerSalary(workers[i]);
+				break;
+			}
+		}
+
+		if (!flag) {
+			strcpy(salaries[num_salaries].fio, workers[i].fio);
+			salaries[num_salaries].pers_num = workers[i].pers_num;
+			salaries[num_salaries].salary_per_month = OVERTIME * workers[i].rate;
+			salaries[num_salaries].salary_per_range += getWorkerSalary(workers[i]);
+			num_salaries++;
+		}
+	}
+
+	cout << left << setw(18) << "Personal number"
+		<< setw(18) << "Salary per month"
+		<< setw(18) << "Salary per range" << '\n'
+		<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+	for (int i = 0; i < num_salaries; i++) {
+		cout << setw(80) << left << salaries[i].fio << '\n'
+			<< setw(18) << salaries[i].pers_num
+			<< setw(18) << salaries[i].salary_per_month
+			<< setw(18) << salaries[i].salary_per_range << '\n'
+			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+	}
+
+
+	/*Date now = nowDate();
+	double salary = 0, overtime = 0;
+
+	for (int j = 0; range.year <= now.year; j++) {
+		if (range.year == now.year && range.month <= now.month)
+			break;
+		for (int i = 0; i < num_workers; i++) {
+			if (workers[j].work_hours > OVERTIME) {
+				overtime = workers[j].work_hours - OVERTIME;
+				workers[j].work_hours = OVERTIME;
+			}
+			salary += workers[j].rate * (1 - TAX / 100) * (workers[j].work_hours + overtime * 2);
+		}
+		cout << workers[j].fio << "(" << workers[j].pers_num << ") - " << salary;
+		overtime = 0, salary = 0;
+		(12 - range.month <= 0) ? range.year++ : range.month++;
+	}*/
+}
+void searchWorkers(Worker *workers, int num, int choice) {
+	switch (choice) {
+	case 1:
+	{
+		cout << "Enter personal number:\n";
+		int pers_num = readPosIntNum();
+
+		for (int i = 0; i < num; i++) {
+			if (workers[i].pers_num == pers_num) {
+				coutWorker(workers[i]);
+			}
+		}
+
+		break;
+	}
+	case 2:
+	{
+		cout << "Enter date:\n";
+		char date[DATE_SIZE];
+		strcpy(date, getWorkerDate());
+
+		for (int i = 0; i < num; i++) {
+			if (!strcmp(workers[i].date, date)) {
+				coutWorker(workers[i]);
+			}
+		}
+
+		break;
+	}
+	case 3: {
+		cout << "Enter fio:\n";
+		char fio[MAX_STR_SIZE];
+		strcpy(fio, getWorkerFIO());
+
+		for (int i = 0; i < num; i++) {
+			if (!strcmp(workers[i].fio, fio)) {
+				coutWorker(workers[i]);
+			}
+		}
+
+		break;
+	}
+	}
+}
+void sortWorkers(Worker *workers, int num, int choice) {
+	int sortFrom;
+	do {
+		cout << "Enter from sort:\n"
+			" 1.[1-9][a-z]\n"
+			" 2.[9-1][z-a]\n"
+			" 0.back\n";
+		sortFrom = readIntNum();
+	} while (sortFrom < 0 || sortFrom > 2);
+
+	bool flag;
+	switch (choice) {
+	case 1:
+	{
+		if (sortFrom == 1) {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (workers[i].pers_num > workers[i + 1].pers_num) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+		else {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (workers[i].pers_num < workers[i + 1].pers_num) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+
+		coutWorkers(workers, num);
+
+		break;
+	}
+	case 2:
+	{
+		if (sortFrom == 1) {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (atof(workers[i].date) > atof(workers[i + 1].date)) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+		else {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (atof(workers[i].date) < atof(workers[i + 1].date)) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+
+		coutWorkers(workers, num);
+
+		break;
+	}
+	case 3: {
+		if (sortFrom == 1) {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (strcmp(workers[i].fio, workers[i + 1].fio) > 0) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+		else {
+			do {
+				flag = false;
+				for (int i = 0; i < num - 1; i++) {
+					if (strcmp(workers[i].fio, workers[i + 1].fio) < 0) {
+						swap(workers[i], workers[i + 1]);
+						flag = true;
+					}
+				}
+			} while (flag);
+		}
+
+		coutWorkers(workers, num);
+
+		break;
+	}
+	}
+}
 //user
 int userApp(User *user) {
 	int choice;
@@ -119,8 +345,62 @@ int userApp(User *user) {
 			return EXIT_OPTION;
 		case 1:
 			viewAllWorkers();
-			doPauseAndCls();
 			break;
+		case 2:
+		{
+			cout << "Input date range(valid ranges: 1.2, 0.18, 2.0)\n";
+			char range[DATE_SIZE];
+			strcpy(range, getRange());
+
+			int num;
+			Worker *workers = new Worker[MAX_ARRAY_SIZE];
+			readAllWorkers(workers, num);
+
+			calcAndCoutSalariesForRange(workers, num, range);
+			break;
+		}
+		case 3:
+		{
+			do {
+				cout << "Choose parameter for search:\n"
+					" 1.personal number\n"
+					" 2.date\n"
+					" 3.fio\n"
+					" 0.back\n";
+				choice = readIntNum();
+				system("cls");
+			} while (choice < 0 || choice > 3);
+
+			if (choice != 0) {
+				int num;
+				Worker *workers = new Worker[MAX_ARRAY_SIZE];
+				readAllWorkers(workers, num);
+
+				searchWorkers(workers, num, choice);
+			}
+			break;
+		}
+		case 4:
+		{
+			do {
+				cout << "Choose parameter for sort:\n"
+					" 1.personal number\n"
+					" 2.date\n"
+					" 3.fio\n"
+					" 0.back\n";
+				choice = readIntNum();
+				system("cls");
+			} while (choice < 0 || choice > 3);
+
+			if (choice != 0) {
+				int num;
+				Worker *workers = new Worker[MAX_ARRAY_SIZE];
+				readAllWorkers(workers, num);
+
+				sortWorkers(workers, num, choice);
+			}
+			break;
+		}
 		case 5: 
 		{
 			int choice;
@@ -130,8 +410,9 @@ int userApp(User *user) {
 		}
 		default:
 			cout << "Unknown option: " << choice << '\n';
-			doPauseAndCls();
 		}
+
+		doPauseAndCls();
 	}
 }
 void viewAllWorkers() {
@@ -156,17 +437,58 @@ void coutWorkers(Worker *workers, int num) {
 			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 }
 void coutWorker(Worker worker) {
-	cout << "FIO: " << worker.fio << '\n'
-		<< "Personal number: " << worker.pers_num << '\n'
-		<< "Date: " << worker.date << '\n'
-		<< "Work hours: " << worker.work_hours << '\n'
-		<< "Rate: " << worker.rate << '\n';
+	cout << setw(80) << left << worker.fio << '\n'
+		<< setw(18) << worker.pers_num
+		<< setw(10) << worker.date
+		<< setw(13) << worker.work_hours
+		<< setw(10) << worker.rate << '\n'
+		<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 }
 
 //another
+char *getRange() {
+	char date[MAX_STR_SIZE];
+	do {
+		cin >> date;
+	} while (!isValidRange(date));
+	
+	Date range, from, now = nowDate();
+	range.year = atoi(strtok(date, "."));
+	range.month = atoi(strtok(NULL, "."));
+
+	if (range.month > 12) {
+		range.year += range.month / 12;
+		range.month = range.month % 12;
+	}
+
+	from.year = now.year - range.year;
+	int diff_month = now.month - range.month;
+	if (diff_month < 0) {
+		from.year--;
+		from.month = 12 - fabs(diff_month);
+	}
+	else
+		from.month = diff_month;
+
+	char from_str[DATE_SIZE];
+	(from.month >= 10)
+		? sprintf(from_str, "%d.%d", from.year, from.month)
+		: sprintf(from_str, "%d.0%d", from.year, from.month);
+
+	return from_str;
+}
+bool isValidRange(char *str) {
+	cmatch result;
+	regex regular("^[0-9]\.[0-9][0-9]?$");
+	bool valid = regex_match(str, result, regular);
+	if (!valid)
+		cout << "Wrong date format.\n";
+	return valid;
+}
 int workersFixture() {
 	int num = 6;
 	Worker *workers = new Worker[num];
+
 	string arr_fio[] = {
 		"Andrew Brown",
 		"Pavel Petrov",
@@ -175,32 +497,42 @@ int workersFixture() {
 		"Ivan Ivanovich I",
 		"New Try"
 	};
-	double arr_date[] = {
-		2019.5, 2019.4, 2019.3, 2019.2, 2019.1,
-		2018.12, 2018.11, 2018.10, 2018.09, 2018.08,
+	int num_dates = 9;
+	string arr_date[] = {
+		"2019.05", "2019.04", "2019.03", "2019.02", "2019.01",
+		"2018.12", "2018.11", "2018.10", "2018.09"
 	};
 
 	int numFromFile;
 	Worker *workersFromFile = new Worker[MAX_ARRAY_SIZE];
 	readAllWorkers(workersFromFile, numFromFile);
-	for (int i = 0; i < num * 10; i++) {
-		strcpy(workers[i].fio, arr_fio[i].c_str());
-		strcpy(workers[i].date, "2019.6");
-		workers[i].pers_num = (i + 1) * 100;
-		workers[i].work_hours = i + 100;
-		workers[i].rate = i + 10;
 
-		if (workersFromFile[i].pers_num == workers[i].pers_num && workersFromFile[i].fio != workers[i].fio) {
-			cout << "You cannot create records with the same personal number and differecnts FIO.\n";
-			doPauseAndCls();
-			return 1;
+	int rate = 10, work_hours = 140, pers_num = 2143;
+	for (int i = 0; i < num; i++) {
+		for (int j = 0; j < num_dates; j++) {
+			strcpy(workers[i].fio, arr_fio[i].c_str());
+			strcpy(workers[i].date, arr_date[j].c_str());
+			workers[i].pers_num = pers_num;
+			workers[i].work_hours = work_hours;
+			workers[i].rate = rate;
+
+			if (workersFromFile[i].pers_num == workers[i].pers_num && strcmp(workersFromFile[i].fio, workers[i].fio)) {
+				cout << "You cannot create records with the same personal number and differecnts FIO.\n";
+				doPauseAndCls();
+				return 1;
+			}
+			if (workersFromFile[i].pers_num == workers[i].pers_num && strcmp(workersFromFile[i].date, workers[i].date)) {
+				cout << "You cannot create records with the same date for one worker.\n";
+				doPauseAndCls();
+				return 1;
+			}
+			insertWorker(workers[i]);
+
+			work_hours += ( j % 3 ? 7 : -10 );
 		}
-		if (workersFromFile[i].pers_num == workers[i].pers_num && !strcmp(workersFromFile[i].date, workers[i].date)) {
-			cout << "You cannot create records with the same date for one worker.\n";
-			doPauseAndCls();
-			return 1;
-		}
-		insertWorker(workers[i]);
+
+		pers_num++;
+		rate++;
 	}
 
 	return 0;
@@ -307,27 +639,17 @@ Date nowDate() {
 	return date;
 }
 bool isValidDate(char *date) {
-	/*int len = strlen(date);
-	if (len != 6 && len != 7) {
-		cout << "Wrong format. String should be in format: (year.month). Example: 2019.6\n";
-		return false;
-	}*/
-
 	cmatch result;
 	regex regular("^([0-9]{4})\.([0-9][0-9]?)$");
 	if (!regex_match(date, result, regular))
 		return false;
 
-	//char date[DATE_SIZE];
-	//string s = result[1];
-	int year = atoi(result[1].str().c_str()),
-		month = atoi(result[2].str().c_str());
-	if (month == 0)
-		return false;
-
 	Date now = nowDate();
-	int rangeY = fabs(now.year - year),
+	int year = atoi(result[1].str().c_str()),
+		month = atoi(result[2].str().c_str()),
+		rangeY = fabs(now.year - year),
 		rangeM = fabs(now.month - month);
+
 	if (rangeY >= 2 && rangeM > 0) {
 		cout << "Wrong year(year must be a number not larger than the current year by 2 and not less than the current year by 2).\n";
 		return false;
@@ -360,6 +682,11 @@ char *getWorkerDate() {
 	do {
 		cin.getline(date, sizeof date);
 	} while (!isValidDate(date));
+	if (strlen(date) != DATE_SIZE - 1) {
+		date[DATE_SIZE - 1] = '\0';
+		date[DATE_SIZE - 2] = date[DATE_SIZE - 3];
+		date[DATE_SIZE - 3] = '0';
+	}
 	return date;
 }
 Worker getWorkerInfo() {

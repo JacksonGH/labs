@@ -10,7 +10,7 @@ int readIntNum() {
 		else {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Error 1: Value should be type int.\n ";
+			cout << "Error 1: Value should be type int.\n";
 		}
 	}
 }
@@ -24,7 +24,7 @@ double readDoubleNum() {
 		else {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Error 1: Value should be type double.\n ";
+			cout << "Error 1: Value should be type double.\n";
 		}
 	}
 }
@@ -36,7 +36,7 @@ int readPosIntNum() {
 			return num;
 		}
 		else {
-			cout << "Number should be positive";
+			cout << "Number should be positive\n";
 		}
 	};
 	return num;
@@ -49,7 +49,7 @@ double readPosDoubleNum() {
 			return num;
 		}
 		else {
-			cout << "Number should be positive";
+			cout << "Number should be positive\n";
 		}
 	};
 	return num;

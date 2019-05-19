@@ -6,6 +6,8 @@
 #include <regex>
 #include <string>
 #include <iomanip>
+//test
+#include <stdlib.h>
 
 using namespace std;
 
@@ -15,10 +17,15 @@ const int CONFIRM = 1;
 const int EDIT = 2;
 const int CANCEL = 3;
 
+struct Date {
+	int year;
+	int month;
+};
+
 struct Worker {
 	char fio[MAX_STR_SIZE];
 	int pers_num;
-	double date;
+	char date[DATE_SIZE];
 	int work_hours;
 	double rate;
 };
@@ -35,11 +42,11 @@ void coutWorker(Worker);
 int workersFixture();
 int addWorker();
 Worker editEnterWorker(Worker);
-int getNowYear();
-bool isValidDate(double);
+Date nowDate();
+bool isValidDate(char *);
 bool isValidFIO(char *);
 char *getWorkerFIO();
-double getWorkerDate();
+char *getWorkerDate();
 Worker getWorkerInfo();
 void insertWorker(Worker);
 bool readAllWorkers(Worker *, int &);
@@ -55,6 +62,9 @@ int main()
 	//add workers 
 	//if (workersFixture() == 0) cout << "Succeesss";
 	//system("pause");
+
+	getWorkerDate();
+	addWorker();
 
 	//auth
 	/*int choice;
@@ -175,7 +185,7 @@ int workersFixture() {
 	readAllWorkers(workersFromFile, numFromFile);
 	for (int i = 0; i < num * 10; i++) {
 		strcpy(workers[i].fio, arr_fio[i].c_str());
-		workers[i].date = 2019.6;
+		strcpy(workers[i].date, "2019.6");
 		workers[i].pers_num = (i + 1) * 100;
 		workers[i].work_hours = i + 100;
 		workers[i].rate = i + 10;
@@ -185,7 +195,7 @@ int workersFixture() {
 			doPauseAndCls();
 			return 1;
 		}
-		if (workersFromFile[i].pers_num == workers[i].pers_num && workersFromFile[i].date == workers[i].date) {
+		if (workersFromFile[i].pers_num == workers[i].pers_num && !strcmp(workersFromFile[i].date, workers[i].date)) {
 			cout << "You cannot create records with the same date for one worker.\n";
 			doPauseAndCls();
 			return 1;
@@ -208,7 +218,7 @@ int addWorker() {
 			doPauseAndCls();
 			return 1;
 		}
-		if (workers[i].pers_num == worker.pers_num && workers[i].date == worker.date) {
+		if (workers[i].pers_num == worker.pers_num && !strcmp(workers[i].date, worker.date)) {
 			cout << "You cannot create records with the same date for one worker.\n";
 			doPauseAndCls();
 			return 1;
@@ -269,7 +279,7 @@ Worker editEnterWorker(Worker worker) {
 			break;
 		case 3:
 			cout << "Enter year and month(! in format year.month):\n";
-			worker.date = getWorkerDate();
+			strcpy(worker.date, getWorkerDate());
 			system("cls");
 			break;
 		case 4:
@@ -287,27 +297,43 @@ Worker editEnterWorker(Worker worker) {
 		}
 	}
 }
-int getNowYear() {
+Date nowDate() {
 	struct tm localtime;
 	time_t now = time(NULL);
 	localtime_s(&localtime, &now);
-	return localtime.tm_year + 1900;
+	Date date;
+	date.year = localtime.tm_year + 1900;
+	date.month = localtime.tm_mon + 1;
+	return date;
 }
-bool isValidDate(double date) {
-	int enterYear = floor(date),
-		nowYear = getNowYear(),
-		month = round((date - enterYear) * 100);
+bool isValidDate(char *date) {
+	/*int len = strlen(date);
+	if (len != 6 && len != 7) {
+		cout << "Wrong format. String should be in format: (year.month). Example: 2019.6\n";
+		return false;
+	}*/
 
-	if (month % 10 == 0) {
-		month /= 10;
-	}
+	cmatch result;
+	regex regular("^([0-9]{4})\.([0-9][0-9]?)$");
+	if (!regex_match(date, result, regular))
+		return false;
 
-	if (enterYear > nowYear + 2 || enterYear < nowYear - 2) {
+	//char date[DATE_SIZE];
+	//string s = result[1];
+	int year = atoi(result[1].str().c_str()),
+		month = atoi(result[2].str().c_str());
+	if (month == 0)
+		return false;
+
+	Date now = nowDate();
+	int rangeY = fabs(now.year - year),
+		rangeM = fabs(now.month - month);
+	if (rangeY >= 2 && rangeM > 0) {
 		cout << "Wrong year(year must be a number not larger than the current year by 2 and not less than the current year by 2).\n";
 		return false;
 	}
 
-	if (month != (int)month || month < 1 || month > 12) {
+	if (month < 1 || month > 12) {
 		cout << "Wrong month(month must be a number from 1 to 12).\n";
 		return false;
 	}
@@ -317,7 +343,7 @@ bool isValidDate(double date) {
 bool isValidFIO(char *str) {
 	cmatch result;
 	regex regular("^[A-Z][a-z]{0,18}(-[A-Z][a-z]{0,18})? {1}[A-Z][a-z]{0,18}( {1}[A-Z][a-z]{0,18})?$");
-	bool valid = std::regex_match(str, result, regular);
+	bool valid = regex_match(str, result, regular);
 	if (!valid)
 		cout << "FIO must be a string, which can contain minimum surname and name(word cannot be more than 19, if the surname is compound then 38 excluding hyphens).\n";
 	return valid;
@@ -329,10 +355,10 @@ char *getWorkerFIO() {
 	} while (!isValidFIO(fio));
 	return fio;
 }
-double getWorkerDate() {
-	double date;
+char *getWorkerDate() {
+	char date[MAX_STR_SIZE];
 	do {
-		date = readDoubleNum();
+		cin.getline(date, sizeof date);
 	} while (!isValidDate(date));
 	return date;
 }
@@ -346,7 +372,7 @@ Worker getWorkerInfo() {
 	worker.pers_num = readPosIntNum();
 
 	cout << "Enter year and month(! in format year.month):\n";
-	worker.date = getWorkerDate();
+	strcpy(worker.date, getWorkerDate());
 
 	cout << "Enter work hours(! int number):\n";
 	worker.work_hours = readPosIntNum();

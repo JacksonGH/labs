@@ -8,6 +8,7 @@ using namespace std;
 const string USERS = "D://users.txt";
 const int MAX_ARRAY_SIZE = 100;
 const int MAX_STR_SIZE = 81;
+const int DATE_SIZE = 8;
 
 const int ROLE_ADMIN = 1;
 const int ROLE_USER = 0;

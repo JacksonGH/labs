@@ -8,3 +8,5 @@ using namespace std;
 int mainApp(User *);
 int userApp(User *);
 int adminApp(User *);
+int adminAppWorkers(User *user, int &);
+int adminAppUsers(User *user, int &);

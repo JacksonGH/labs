@@ -28,25 +28,27 @@ struct Salary {
 	double salary_per_range = 0;
 };
 
-double getWorkerSalary(Worker);
+int addWorker();
+Worker editEnterWorker(Worker);
+void viewAllWorkers();
 void calcAndCoutSalariesForRange(Worker *, int, char *);
 void searchWorkers(Worker *, int, int);
 void sortWorkers(Worker *, int, int);
 
-void viewAllWorkers();
+void insertWorker(Worker);
+bool readAllWorkers(Worker *, int &);
 void coutWorkers(Worker *, int);
 void coutWorker(Worker);
 
-char *getRange();
-bool isValidRange(char *);
-int workersFixture();
-int addWorker();
-Worker editEnterWorker(Worker);
-Date nowDate();
-bool isValidDate(char *);
-bool isValidFIO(char *);
+Worker getWorkerInfo();
 char *getWorkerFIO();
 char *getWorkerDate();
-Worker getWorkerInfo();
-void insertWorker(Worker);
-bool readAllWorkers(Worker *, int &);
+char *getRange();
+
+bool isValidFIO(char *);
+bool isValidDate(char *);
+bool isValidRange(char *);
+
+int workersFixture();
+double getWorkerSalary(Worker);
+Date nowDate();

@@ -83,9 +83,8 @@ int registerUser(User *user) {
 	if (addUser(user) != 0) {
 		return 1;
 	}
-	cout << "Successful registration.\n";
-	doPauseAndCls();
 
+	cout << "Successful registration.\n";
 	cout << ACCESS_DENIED;
 	doPauseAndCls();
 
@@ -120,47 +119,10 @@ void getLoginAndPass(User *user) {
 	hash <string> hash;
 	user->pass = hash(pass + SALT);
 }
-void coutUsers(User *users, int num) {
-	cout << left << setw(20) << "Login"
-		<< setw(10) << "Role"
-		<< setw(10) << "Access"
-		<< '\n';
-	cout << setfill('-') << setw(40) << "" << setfill(' ') << '\n';
-
-	for (int i = 0; i < num; i++) {
-		cout << setw(20) << users[i].login;
-		cout << setw(10) << ((users[i].role == ROLE_ADMIN)
-			? "admin"
-			: "user");
-		cout << setw(10) << ((users[i].access == AVAILABLE)
-			? "   \/"
-			: "   X");
-		cout << '\n';
-	}
-}
 void insertUser(User *user) {
 	ofstream fadd(USERS, ios::binary | ios::app);
 	fadd.write((char*) user, sizeof *user);
 	fadd.close();
-}
-bool readAllUsers(User *users, int &num) {
-	ifstream fin(USERS, ios::binary | ios::in);
-
-	int m = 0;
-	if (!fin.is_open()) {
-		return 1;
-	}
-	else {
-		while (!fin.eof()) {
-			fin.read((char*)&users[m], sizeof users[m]);
-			m++;
-		}
-		fin.close();
-		m--;
-	}
-	num = m;
-
-	return 0;
 }
 bool isValidLogin(char *str) {
 	cmatch result;

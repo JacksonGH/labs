@@ -1,5 +1,6 @@
 #pragma once
 #include "common.h"
+#include "work_with_users.h"
 
 using namespace std;
 
@@ -10,16 +11,14 @@ const int REGISTER = 2;
 
 const string SALT = "kasd83mfds";
 
-int auth(int &, User *);
+int auth(int &choice, User *user);
 int loginUser(User *);
 int registerUser(User *);
 
+int addUser(User *);
 void getLoginAndPass(User *);
 
-bool readAllUsers(User *, int &);
 void insertUser(User *);
-
-void coutUsers(User *, int);
 
 bool isValidLogin(char *);
 bool isValidPass(char *);

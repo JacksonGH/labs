@@ -24,7 +24,7 @@ int main()
 	//test
 	User *user = new User;
 	user->access = false;
-	user->role = 0;
+	user->role = 1;
 	strcpy(user->login, "TestUser");
 	hash <string> hash;
 	user->pass = hash("TestPass" + SALT);
@@ -32,6 +32,6 @@ int main()
 	//new module(user)
 	while(mainApp(user));
 
-	_getch(); _getch();
+	//_getch(); _getch();
 	return 0;
 }

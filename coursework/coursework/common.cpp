@@ -44,7 +44,7 @@ int readPosIntNum() {
 double readPosDoubleNum() {
 	double num;
 	while (1) {
-		num = readIntNum();
+		num = readDoubleNum();
 		if (num >= 0) {
 			return num;
 		}

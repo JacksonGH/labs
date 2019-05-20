@@ -193,10 +193,10 @@ void sortWorkers(Worker *workers, int num, int choice) {
 	}
 }
 void viewAllWorkers() {
-	Worker *worker = new Worker[MAX_ARRAY_SIZE];
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
 	int num = 0;
-	readAllWorkers(worker, num);
-	coutWorkers(worker, num);
+	readAllWorkers(workers, num);
+	coutWorkers(workers, num);
 }
 void coutWorkers(Worker *workers, int num) {
 	cout << left << setw(18) << "Personal Number"
@@ -221,8 +221,6 @@ void coutWorker(Worker worker) {
 		<< setw(10) << worker.rate << '\n'
 		<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 }
-
-//another
 char *getRange() {
 	char date[MAX_STR_SIZE];
 	do {
@@ -350,12 +348,10 @@ int addWorker() {
 		else if (choice == CONFIRM) {
 			insertWorker(worker);
 			cout << "Successful added worker info.\n";
-			doPauseAndCls();
 			return 0;
 		}
 		else if (choice == CANCEL) {
 			cout << "Added worker canceled.\n";
-			doPauseAndCls();
 			return 0;
 		}
 	}

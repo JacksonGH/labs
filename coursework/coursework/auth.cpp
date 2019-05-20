@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "auth.h"
 
 int auth(int &choice, User *user) {

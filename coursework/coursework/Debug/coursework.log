@@ -1,10 +1,16 @@
-﻿  source.cpp
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(468): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(482): warning C4129: .: неизвестная escape-последовательность
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(643): warning C4129: .: неизвестная escape-последовательность
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(650): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(651): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(478): warning C4172: возвращение адреса локальной или временной переменной : from_str
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(678): warning C4172: возвращение адреса локальной или временной переменной : fio
-c:\users\gacks\source\repos\coursework\coursework\source.cpp(690): warning C4172: возвращение адреса локальной или временной переменной : date
+﻿  auth.cpp
+c:\users\gacks\source\repos\coursework\coursework\auth.cpp(136): warning C4129: /: неизвестная escape-последовательность
+c:\users\gacks\source\repos\coursework\coursework\auth.cpp(167): warning C4129: .: неизвестная escape-последовательность
+  modules.cpp
+  source.cpp
+  work_with_workers.cpp
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(245): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(259): warning C4129: .: неизвестная escape-последовательность
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(421): warning C4129: .: неизвестная escape-последовательность
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(428): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(429): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  Создание кода...
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(255): warning C4172: возвращение адреса локальной или временной переменной : from_str
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(456): warning C4172: возвращение адреса локальной или временной переменной : fio
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(468): warning C4172: возвращение адреса локальной или временной переменной : date
   coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

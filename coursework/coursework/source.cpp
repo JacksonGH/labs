@@ -3,12 +3,6 @@
 
 int main()
 {
-	//cout users
-	/*User *users = new User[MAX_ARRAY_SIZE];
-	int num;
-	readAllUsers(users, num);
-	coutUsers(users, num);*/
-
 	//add workers 
 	/*if (workersFixture() == 0) cout << "Succeesss";
 	system("pause");*/
@@ -21,7 +15,7 @@ int main()
 	if (choice == EXIT_OPTION)
 		return 0;*/
 
-	//test
+		//test
 	User *user = new User;
 	user->access = false;
 	user->role = 1;
@@ -29,9 +23,11 @@ int main()
 	hash <string> hash;
 	user->pass = hash("TestPass" + SALT);
 
-	//new module(user)
-	while(mainApp(user));
+	//redWorker();
+	//deleteWorker();
 
-	//_getch(); _getch();
+	//new module(user)
+	while (mainApp(user));
+
 	return 0;
 }

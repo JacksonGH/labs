@@ -1,6 +1,11 @@
-﻿  auth.cpp
-c:\users\gacks\source\repos\coursework\coursework\auth.cpp(129): warning C4129: .: неизвестная escape-последовательность
-  modules.cpp
+﻿  modules.cpp
   source.cpp
+  work_with_workers.cpp
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(243): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(426): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(427): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
   Создание кода...
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(253): warning C4172: возвращение адреса локальной или временной переменной : from_str
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(454): warning C4172: возвращение адреса локальной или временной переменной : fio
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(466): warning C4172: возвращение адреса локальной или временной переменной : date
   coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

@@ -254,7 +254,7 @@ char *getRange() {
 }
 bool isValidRange(char *str) {
 	cmatch result;
-	regex regular("^[0-9]\.[0-9][0-9]?$");
+	regex regular("^[0-9]\\.[0-9][0-9]?$");
 	bool valid = regex_match(str, result, regular);
 	if (!valid)
 		cout << "Wrong date format.\n";
@@ -414,9 +414,11 @@ Date nowDate() {
 }
 bool isValidDate(char *date) {
 	cmatch result;
-	regex regular("^([0-9]{4})\.([0-9][0-9]?)$");
-	if (!regex_match(date, result, regular))
+	regex regular("^([0-9]{4})\\.([0-9][0-9]?)$");
+	if (!regex_match(date, result, regular)) {
+		cout << "Wrong format.\n";
 		return false;
+	}
 
 	Date now = nowDate();
 	int year = atoi(result[1].str().c_str()),
@@ -506,4 +508,121 @@ bool readAllWorkers(Worker *workers, int &num) {
 	num = m;
 
 	return 0;
+}
+Worker getWorkerFK() {
+	Worker worker;
+
+	cout << "Enter personal number:\n";
+	worker.pers_num = readPosIntNum();
+
+	cout << "Enter year and month(! in format year.month):\n";
+	strcpy(worker.date, getWorkerDate());
+
+	return worker;
+}
+int checkWorkerFK(Worker *workers, int &num, Worker &worker) {
+	int findAt = -1;
+	for (int i = 0; i < num; i++) {
+		if (workers[i].pers_num == worker.pers_num && !strcmp(workers[i].date, worker.date)) {
+			findAt = i;
+			worker = workers[i];
+			break;
+		}
+	}
+	return findAt;
+}
+int editWorker() {
+	int num;
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workers, num);
+
+	Worker worker = getWorkerFK();
+
+	int findAt = checkWorkerFK(workers, num, worker);
+	if (findAt < 0) {
+		cout << "Worker with this credentials not found.\n";
+		return 1;
+	}
+	system("cls");
+
+	int choice;
+	bool changed = false;
+	while (1) {
+		coutWorker(worker);
+		cout << "Choose what you want:\n"
+			" 1.confirm\n"
+			" 2.edit\n"
+			" 3.cancel\n";
+		choice = readIntNum();
+		system("cls");
+
+		if (choice == EDIT) {
+			changed = true;
+			worker = editEnterWorker(worker);
+		}
+		else if (choice == CONFIRM) {
+			break;
+		}
+		else if (choice == CANCEL) {
+			cout << "Red worker canceled.\n";
+			return 0;
+		}
+	}
+
+	if (!changed) {
+		cout << "Nothing changed.\n";
+		return 1;
+	}
+
+	for (int i = 0; i < num; i++) {
+		if (i == findAt)
+			continue;
+		if (workers[i].pers_num == worker.pers_num && strcmp(workers[i].fio, worker.fio)) {
+			cout << "This is personal number of another worker.\n";
+			return 1;
+		}
+		if (workers[i].pers_num == worker.pers_num && !strcmp(workers[i].date, worker.date)) {
+			cout << "Worker info for this date already exist.\n";
+			return 1;
+		}
+	}
+
+	updateWorkerInfo(worker, findAt);
+	cout << "Worker info changed successfully.\n";
+
+	return 0;
+}
+void updateWorkerInfo(Worker worker, int findAt) {
+	fstream in(WORKERS, ios::binary | ios::in | ios::out);
+	in.seekp(sizeof worker * findAt);
+	in.write((char*)&worker, sizeof worker);
+	in.close();
+}
+int deleteWorker() {
+	int num;
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workers, num);
+
+	Worker worker = getWorkerFK();
+
+	int findAt = checkWorkerFK(workers, num, worker);
+	if (findAt < 0) {
+		cout << "Worker with this credentials not found.\n";
+		return 1;
+	}
+
+	for (int i = findAt; i + 1 < num; i++) {
+		workers[i] = workers[i + 1];
+	}
+	num--;
+
+	rewriteWorkersFile(workers, num);
+	cout << "Worker info successfully deleted.\n";
+
+	return 0;
+}
+void rewriteWorkersFile(Worker *workers, int num) {
+	ofstream fout(WORKERS, ios::binary | ios::out);
+	fout.write((char*)&workers[0], sizeof workers[0] * num);
+	fout.close();
 }

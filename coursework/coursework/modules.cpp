@@ -138,6 +138,8 @@ int adminAppWorkers(User *user, int &choice) {
 			"Choose what you want:\n"
 			" 1.add worker\n"
 			" 2.view all data about workers\n"
+			" 3.edit worker info\n"
+			" 4.remove worker info\n"
 			" 5.calculate the wages of all workers for a certain period of time\n"
 			" 6.search data about workers\n"
 			" 7.sort data about workers\n"
@@ -153,6 +155,12 @@ int adminAppWorkers(User *user, int &choice) {
 			break;
 		case 2:
 			viewAllWorkers();
+			break;
+		case 3:
+			editWorker();
+			break;
+		case 4:
+			deleteWorker();
 			break;
 		case 5:
 		{

@@ -126,7 +126,7 @@ void insertUser(User *user) {
 }
 bool isValidLogin(char *str) {
 	cmatch result;
-	regex regular("^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$");
+	regex regular("^[a-zA-Z][a-zA-Z0-9-_\\.]{1,19}$");
 	bool valid = std::regex_match(str, result, regular);
 	if (!valid)
 		cout << "Login must be a string(2-20 characters long), which can contain letters or numbers, the first character must be a letter.\n";

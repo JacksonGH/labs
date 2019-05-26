@@ -15,16 +15,13 @@ int main()
 	if (choice == EXIT_OPTION)
 		return 0;*/
 
-		//test
+	//test
 	User *user = new User;
 	user->access = false;
 	user->role = 1;
 	strcpy(user->login, "TestUser");
 	hash <string> hash;
 	user->pass = hash("TestPass" + SALT);
-
-	//redWorker();
-	//deleteWorker();
 
 	//new module(user)
 	while (mainApp(user));

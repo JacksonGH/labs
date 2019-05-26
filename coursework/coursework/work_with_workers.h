@@ -28,6 +28,12 @@ struct Salary {
 	double salary_per_range = 0;
 };
 
+struct FIO {
+	char surname[MAX_STR_SIZE];
+	char name[MAX_STR_SIZE];
+	char patronymic[MAX_STR_SIZE];
+};
+
 void updateWorkerInfo(Worker, int);
 void rewriteWorkersFile(Worker *, int);
 int addWorker();
@@ -59,3 +65,8 @@ bool isValidRange(char *);
 int workersFixture();
 double getWorkerSalary(Worker);
 Date nowDate();
+
+FIO getFioStructForSearch();
+bool isValidPartOfFIO(char *str);
+bool likeFio(FIO fio, FIO likeFio);
+FIO getStructFromStr(char *fioStr);

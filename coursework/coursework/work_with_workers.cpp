@@ -52,40 +52,58 @@ void searchWorkers(Worker *workers, int num, int choice) {
 	switch (choice) {
 	case 1:
 	{
+		bool flag;
+
 		cout << "Enter personal number:\n";
 		int pers_num = readPosIntNum();
 
 		for (int i = 0; i < num; i++) {
 			if (workers[i].pers_num == pers_num) {
 				coutWorker(workers[i]);
+				flag = true;
 			}
+		}
+
+		if (!flag) {
+			cout << "Not found\n";
 		}
 
 		break;
 	}
 	case 2:
 	{
-		cout << "Enter date:\n";
 		char date[DATE_SIZE];
+		bool flag;
+
+		cout << "Enter date:\n";
 		strcpy(date, getWorkerDate());
 
 		for (int i = 0; i < num; i++) {
 			if (!strcmp(workers[i].date, date)) {
 				coutWorker(workers[i]);
+				flag = true;
 			}
+		}
+
+		if (!flag) {
+			cout << "Not found\n";
 		}
 
 		break;
 	}
 	case 3: {
-		cout << "Enter fio:\n";
-		char fio[MAX_STR_SIZE];
-		strcpy(fio, getWorkerFIO());
+		FIO fio = getFioStructForSearch();
+		bool flag = false;
 
 		for (int i = 0; i < num; i++) {
-			if (!strcmp(workers[i].fio, fio)) {
+			if (likeFio(fio, getStructFromStr(workers[i].fio))) {
 				coutWorker(workers[i]);
+				flag = true;
 			}
+		}
+
+		if (!flag) {
+			cout << "Not found\n";
 		}
 
 		break;
@@ -267,9 +285,8 @@ int workersFixture() {
 	string arr_fio[] = {
 		"Andrew Brown",
 		"Pavel Petrov",
-		"Ivannivannivann",
 		"Ivan I P",
-		"Ivan Ivanovich I",
+		"Ivan Ivanovich Ivanov",
 		"New Try"
 	};
 	int num_dates = 9;
@@ -291,16 +308,6 @@ int workersFixture() {
 			workers[i].work_hours = work_hours;
 			workers[i].rate = rate;
 
-			if (workersFromFile[i].pers_num == workers[i].pers_num && strcmp(workersFromFile[i].fio, workers[i].fio)) {
-				cout << "You cannot create records with the same personal number and differecnts FIO.\n";
-				doPauseAndCls();
-				return 1;
-			}
-			if (workersFromFile[i].pers_num == workers[i].pers_num && strcmp(workersFromFile[i].date, workers[i].date)) {
-				cout << "You cannot create records with the same date for one worker.\n";
-				doPauseAndCls();
-				return 1;
-			}
 			insertWorker(workers[i]);
 
 			work_hours += (j % 3 ? 7 : -10);
@@ -625,4 +632,76 @@ void rewriteWorkersFile(Worker *workers, int num) {
 	ofstream fout(WORKERS, ios::binary | ios::out);
 	fout.write((char*)&workers[0], sizeof workers[0] * num);
 	fout.close();
+}
+FIO getFioStructForSearch() {
+	FIO fio;
+
+	do {
+		cout << "Surname: ";
+		do {
+			cin.getline(fio.surname, sizeof fio.surname);
+		} while (!isValidPartOfFIO(fio.surname));
+
+		cout << "Name: ";
+		do {
+			cin.getline(fio.name, sizeof fio.name);
+		} while (!isValidPartOfFIO(fio.name));
+
+		cout << "Patronymic: ";
+		do {
+			cin.getline(fio.patronymic, sizeof fio.patronymic);
+		} while (!isValidPartOfFIO(fio.patronymic));
+
+		system("cls");
+	} while (!strcmp(fio.surname, "") && !strcmp(fio.name, "") && !strcmp(fio.patronymic, ""));
+
+	return fio;
+}
+bool isValidPartOfFIO(char *str) {
+	if (!strcmp(str, "")) return true;
+	cmatch result;
+	regex regular("^[A-Z][a-z]{0,18}$");
+	bool valid = regex_match(str, result, regular);
+	if (!valid)
+		cout << "FIO part must be a string, starting with a capital letter and then all small letters, not more than 19 letters.\n";
+	return valid;
+}
+bool likeFio(FIO fio, FIO likeFio) {
+	bool flag = false;
+
+	if (strcmp(fio.surname, "")) {
+		flag = strcmp(fio.surname, likeFio.surname)
+			? false
+			: true;
+	}
+
+	if (strcmp(fio.name, "")) {
+		flag = strcmp(fio.name, likeFio.name)
+			? false
+			: true;
+	}
+
+	if (strcmp(fio.patronymic, "")) {
+		flag = strcmp(fio.patronymic, likeFio.patronymic)
+			? false
+			: true;
+	}
+
+	return flag;
+}
+FIO getStructFromStr(char *fioStr) {
+	FIO fio;
+	char str[MAX_STR_SIZE], *buff;
+	strcpy(str, fioStr);
+
+	strcpy(fio.surname, strtok(str, " "));
+	strcpy(fio.name, strtok(NULL, " "));;
+	strcpy(
+		fio.patronymic,
+		(buff = strtok(NULL, " ")) == NULL ? "" : buff
+	);
+	if (strcmp(fio.patronymic, ""))
+		strtok(NULL, " ");
+
+	return fio;
 }

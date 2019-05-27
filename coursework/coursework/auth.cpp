@@ -61,7 +61,7 @@ int loginUser(User *user) {
 	doPauseAndCls();
 	return 1;
 }
-int addUser(User *user) {
+int getCredentials(User *user) {
 	getLoginAndPass(user);
 
 	int num;
@@ -76,16 +76,16 @@ int addUser(User *user) {
 		}
 	}
 
-	insertUser(user);
 	return 0;
 }
 int registerUser(User *user) {
-	if (addUser(user) != 0) {
+	if (getCredentials(user) != 0) {
 		return 1;
 	}
 
-	cout << "Successful registration.\n";
-	cout << ACCESS_DENIED;
+	insertUser(user);
+	cout << "Successful registration.\n"
+		<< ACCESS_DENIED;
 	doPauseAndCls();
 
 	return 0;

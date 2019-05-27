@@ -33,13 +33,42 @@ void coutUsers(User *users, int num) {
 	cout << setfill('-') << setw(40) << "" << setfill(' ') << '\n';
 
 	for (int i = 0; i < num; i++) {
+		if (users[i].role == ROLE_SUPER_ADMIN_VALUE)
+			continue;
 		cout << setw(20) << users[i].login;
-		cout << setw(10) << ((users[i].role == ROLE_ADMIN)
-			? "admin"
-			: "user");
-		cout << setw(10) << ((users[i].access == AVAILABLE)
-			? "   \/"
-			: "   X");
+		cout << setw(10) << (
+			(users[i].role == ROLE_ADMIN_VALUE) ? "admin" : "user"
+			);
+		cout << setw(10) << (
+			(users[i].access == AVAILABLE) ? "   +" : "   -"
+			);
 		cout << '\n';
 	}
+}
+int addUser(int access) {
+	User *user = new User;
+	getCredentials(user);
+
+	if (access == ROLE_SUPER_ADMIN_VALUE) {
+		string role;
+		cout << "Enter user role(available options: user or admin).\n";
+
+		do {
+			getline(cin, role);
+		} while (role != ROLE_ADMIN_NAME && role != ROLE_USER_NAME);
+
+		user->role = (role == ROLE_ADMIN_NAME)
+			? ROLE_ADMIN_VALUE
+			: ROLE_USER_VALUE;
+	}
+	else {
+		user->role = ROLE_USER_VALUE;
+	}
+
+	user->access = AVAILABLE;
+
+	insertUser(user);
+	cout << "Successful added new " << (user->role == ROLE_ADMIN_VALUE ? ROLE_ADMIN_NAME : ROLE_USER_NAME) << ".\n";
+
+	return 0;
 }

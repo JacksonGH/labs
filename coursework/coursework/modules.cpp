@@ -1,10 +1,9 @@
 #include "modules.h"
 
 int mainApp(User *user) {
-	if (user->role == ROLE_ADMIN)
-		return adminApp(user);
-
-	return userApp(user);
+	return (user->role == ROLE_ADMIN_VALUE || user->role == ROLE_SUPER_ADMIN_VALUE)
+		? adminApp(user)
+		: userApp(user);
 }
 int userApp(User *user) {
 	int choice;
@@ -228,6 +227,7 @@ int adminAppUsers(User *user, int &choice) {
 	while (1) {
 		cout << "Login: " << user->login << '\n' <<
 			"Choose what you want:\n"
+			" 1.add user\n"
 			" 2.view all data about users\n"
 			" 0.back\n";
 		choice = readIntNum();
@@ -236,6 +236,9 @@ int adminAppUsers(User *user, int &choice) {
 		switch (choice) {
 		case EXIT_OPTION:
 			return EXIT_OPTION;
+		case 1:
+			addUser(user->role);
+			break;
 		case 2:
 			viewAllUsers();
 			break;

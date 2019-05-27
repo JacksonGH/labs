@@ -15,7 +15,7 @@ int auth(int &choice, User *user);
 int loginUser(User *);
 int registerUser(User *);
 
-int addUser(User *);
+int getCredentials(User *);
 void getLoginAndPass(User *);
 
 void insertUser(User *);

@@ -15,8 +15,12 @@ const int MAX_ARRAY_SIZE = 100;
 const int MAX_STR_SIZE = 81;
 const int DATE_SIZE = 8;
 
-const int ROLE_ADMIN = 1;
-const int ROLE_USER = 0;
+const string ROLE_SUPER_ADMIN_NAME = "super admin";
+const string ROLE_ADMIN_NAME = "admin";
+const string ROLE_USER_NAME = "user";
+const int ROLE_SUPER_ADMIN_VALUE = 2;
+const int ROLE_ADMIN_VALUE = 1;
+const int ROLE_USER_VALUE = 0;
 
 const int AVAILABLE = 1;
 const int NOT_AVAILABLE = 0;
@@ -31,7 +35,7 @@ struct User
 {
 	char login[MAX_STR_SIZE];
 	unsigned long pass;
-	int role = ROLE_USER;
+	int role = ROLE_USER_VALUE;
 	bool access = NOT_AVAILABLE;
 };
 

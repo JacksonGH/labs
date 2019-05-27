@@ -17,13 +17,16 @@ int main()
 
 	//test
 	User *user = new User;
-	user->access = false;
-	user->role = 1;
-	strcpy(user->login, "TestUser");
+	user->access = true;
+	user->role = ROLE_SUPER_ADMIN_VALUE;
+	strcpy(user->login, "MAIN_ADMIN");
 	hash <string> hash;
-	user->pass = hash("TestPass" + SALT);
+	user->pass = hash("admin" + SALT);
 
-	//new module(user)
+	//new module
+	//addUser(user->role);
+
+	//modules
 	while (mainApp(user));
 
 	return 0;

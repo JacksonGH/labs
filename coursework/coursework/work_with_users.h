@@ -1,6 +1,9 @@
 #pragma once
 #include "common.h"
+#include "auth.h"
 
 void viewAllUsers();
-bool readAllUsers(User *users, int &num);
-void coutUsers(User *users, int num);
+bool readAllUsers(User *, int &);
+void coutUsers(User *, int);
+
+int addUser(int access);

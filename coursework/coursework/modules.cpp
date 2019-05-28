@@ -229,6 +229,8 @@ int adminAppUsers(User *user, int &choice) {
 			"Choose what you want:\n"
 			" 1.add user\n"
 			" 2.view all data about users\n"
+			" 6.search data about workers\n"
+			" 7.sort data about workers\n"
 			" 0.back\n";
 		choice = readIntNum();
 		system("cls");
@@ -241,6 +243,44 @@ int adminAppUsers(User *user, int &choice) {
 			break;
 		case 2:
 			viewAllUsers();
+			break;
+		case 6:
+			do {
+				cout << "Choose parameter for search:\n"
+					" 1.login\n"
+					" 2.access\n"
+					" 3.role\n"
+					" 0.back\n";
+				choice = readIntNum();
+				system("cls");
+			} while (choice < 0 || choice > 3);
+
+			if (choice != 0) {
+				int num;
+				User *users = new User[MAX_ARRAY_SIZE];
+				readAllUsers(users, num);
+
+				searchUsers(users, num, choice);
+			}
+			break;
+		case 7:
+			do {
+				cout << "Choose parameter for sort:\n"
+					" 1.login\n"
+					" 2.access\n"
+					" 3.role\n"
+					" 0.back\n";
+				choice = readIntNum();
+				system("cls");
+			} while (choice < 0 || choice > 3);
+
+			if (choice != 0) {
+				int num;
+				User *users = new User[MAX_ARRAY_SIZE];
+				readAllUsers(users, num);
+
+				sortUsers(users, num, choice);
+			}
 			break;
 		default:
 			cout << "Unknown option: " << choice << '\n';

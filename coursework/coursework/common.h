@@ -22,6 +22,8 @@ const int ROLE_SUPER_ADMIN_VALUE = 2;
 const int ROLE_ADMIN_VALUE = 1;
 const int ROLE_USER_VALUE = 0;
 
+const string HAS_ACCESS = "has access";
+const string HAS_NOT_ACCESS = "hasn't access";
 const int AVAILABLE = 1;
 const int NOT_AVAILABLE = 0;
 
@@ -36,7 +38,7 @@ struct User
 	char login[MAX_STR_SIZE];
 	unsigned long pass;
 	int role = ROLE_USER_VALUE;
-	bool access = NOT_AVAILABLE;
+	int access = NOT_AVAILABLE;
 };
 
 int readIntNum();

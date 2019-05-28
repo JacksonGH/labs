@@ -49,11 +49,11 @@ void calcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) 
 	}
 }
 void searchWorkers(Worker *workers, int num, int choice) {
+	bool flag = false;
+
 	switch (choice) {
 	case 1:
 	{
-		bool flag;
-
 		cout << "Enter personal number:\n";
 		int pers_num = readPosIntNum();
 
@@ -73,7 +73,6 @@ void searchWorkers(Worker *workers, int num, int choice) {
 	case 2:
 	{
 		char date[DATE_SIZE];
-		bool flag;
 
 		cout << "Enter date:\n";
 		strcpy(date, getWorkerDate());
@@ -93,7 +92,6 @@ void searchWorkers(Worker *workers, int num, int choice) {
 	}
 	case 3: {
 		FIO fio = getFioStructForSearch();
-		bool flag = false;
 
 		for (int i = 0; i < num; i++) {
 			if (likeFio(fio, getStructFromStr(workers[i].fio))) {
@@ -147,8 +145,6 @@ void sortWorkers(Worker *workers, int num, int choice) {
 			} while (flag);
 		}
 
-		coutWorkers(workers, num);
-
 		break;
 	}
 	case 2:
@@ -176,8 +172,6 @@ void sortWorkers(Worker *workers, int num, int choice) {
 			} while (flag);
 		}
 
-		coutWorkers(workers, num);
-
 		break;
 	}
 	case 3: {
@@ -204,11 +198,11 @@ void sortWorkers(Worker *workers, int num, int choice) {
 			} while (flag);
 		}
 
-		coutWorkers(workers, num);
-
 		break;
 	}
 	}
+
+	coutWorkers(workers, num);
 }
 void viewAllWorkers() {
 	Worker *workers = new Worker[MAX_ARRAY_SIZE];
@@ -236,8 +230,8 @@ void coutWorker(Worker worker) {
 		<< setw(18) << worker.pers_num
 		<< setw(10) << worker.date
 		<< setw(13) << worker.work_hours
-		<< setw(10) << worker.rate << '\n'
-		<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+		<< setw(10) << worker.rate
+		<< '\n' << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 }
 char *getRange() {
 	char date[MAX_STR_SIZE];

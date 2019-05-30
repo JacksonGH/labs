@@ -261,3 +261,211 @@ string getRoleNameFromValue(int role) {
 		throw new exception("Unknown option.\n");
 	}
 }
+int editUser() {
+	int num;
+	User *users = new User[MAX_ARRAY_SIZE];
+	readAllUsers(users, num);
+
+	User user;
+
+	cout << "Enter login:\n";
+	strcpy(user.login, getLogin());
+
+	int findAt = checkUserLogin(users, num, user);
+	if (findAt < 0) {
+		cout << "User with this login not found.\n";
+		return 1;
+	}
+	system("cls");
+
+	int choice;
+	bool changed = false;
+	while (1) {
+		coutUser(user);
+		cout << "Choose what you want:\n"
+			" 1.confirm\n"
+			" 2.edit\n"
+			" 3.cancel\n";
+		choice = readIntNum();
+		system("cls");
+
+		if (choice == EDIT) {
+			changed = true;
+			user = editEnterUser(user);
+		}
+		else if (choice == CONFIRM) {
+			break;
+		}
+		else if (choice == CANCEL) {
+			cout << "Red user canceled.\n";
+			return 0;
+		}
+	}
+
+	if (!changed) {
+		cout << "Nothing changed.\n";
+		return 1;
+	}
+
+	for (int i = 0; i < num; i++) {
+		if (i == findAt)
+			continue;
+		if (!strcmp(users[i].login, user.login)) {
+			cout << "This is login of another user.\n";
+			return 1;
+		}
+	}
+
+	updateUserInfo(user, findAt);
+	cout << "User info changed successfully.\n";
+
+	return 0;
+}
+int checkUserLogin(User *users, int &num, User &user) {
+	int findAt = -1;
+	for (int i = 0; i < num; i++) {
+		if (!strcmp(users[i].login, user.login)) {
+			findAt = i;
+			user = users[i];
+			break;
+		}
+	}
+	return findAt;
+}
+User editEnterUser(User user) {
+	int choice;
+	while (1) {
+		coutUser(user);
+		cout << "Choose what you want edit:\n"
+			" 1.Login\n"
+			" 2.Pass\n"
+			" 3.Access\n"
+			" 4.Role\n"
+			" 0.exit\n";
+		choice = readIntNum();
+		system("cls");
+
+		switch (choice) {
+		case EXIT_OPTION:
+			return user;
+		case 1:
+			cout << "Enter login:\n";
+			strcpy(user.login, getLogin());
+			system("cls");
+			break;
+		case 2:
+			cout << "Enter pass:\n";
+			user.pass = getPass();
+			system("cls");
+			break;
+		case 3:
+			cout << "Enter access(1 if has ot 0 if hasn't):\n";
+			user.access = getAccess();
+			system("cls");
+			break;
+		case 4:
+			cout << "Enter role(admin or user):\n";
+			user.role = getRole();
+			system("cls");
+			break;
+		default:
+			cout << "Unknown option: " << choice << '\n';
+		}
+	}
+}
+void updateUserInfo(User user, int findAt) {
+	fstream in(USERS, ios::binary | ios::in | ios::out);
+	in.seekp(sizeof user * findAt);
+	in.write((char*)&user, sizeof user);
+	in.close();
+}
+char *getLogin() {
+	char login[MAX_STR_SIZE];
+	do {
+		cin.getline(login, sizeof login);
+	} while (! isValidLogin(login));
+
+	return login;
+}
+int getPass() {
+	char t, *pass = new char[MAX_STR_SIZE];
+
+	do {
+		for (int i = 0;;) {
+			t = _getch();
+			if (t >= 'a' && t <= 'z' || t >= 'A' && t <= 'Z' || t >= '0' && t <= '9' || t == '_') {
+				pass[i++] = t;
+				cout << "*";
+			}
+			if (t == '\b' &&  i >= 1) {
+				cout << "\b \b";
+				i--;
+			}
+			if (t == '\r') {
+				pass[i] = '\0';
+				break;
+			}
+		}
+		cout << '\n';
+	} while (!isValidPass(pass));
+
+	hash <string> hash;
+	return hash(pass + SALT);
+}
+int getAccess() {
+	int access;
+	do {
+		access = readPosIntNum();
+	} while (access != AVAILABLE && access != NOT_AVAILABLE);
+
+	return access;
+}
+int getRole() {
+	string role;
+	do {
+		getline(cin, role);
+	} while (find(begin(AVAILABLE_ROLES), end(AVAILABLE_ROLES), role) == end(AVAILABLE_ROLES));
+
+	return getRoleValueFromName(role);
+}
+int getRoleValueFromName(string role) {
+	if (role == ROLE_USER_NAME)
+		return ROLE_USER_VALUE;
+	else if(role == ROLE_ADMIN_NAME)
+		return ROLE_ADMIN_VALUE;
+	else if (role == ROLE_SUPER_ADMIN_NAME)
+		return ROLE_SUPER_ADMIN_VALUE;
+	
+	throw new exception("Unknown option.\n");
+}
+int deleteUser() {
+	int num;
+	User *users = new User[MAX_ARRAY_SIZE];
+	readAllUsers(users, num);
+
+	User user;
+
+	cout << "Enter login:\n";
+	strcpy(user.login, getLogin());
+
+	int findAt = checkUserLogin(users, num, user);
+	if (findAt < 0) {
+		cout << "User with this login not found.\n";
+		return 1;
+	}
+
+	for (int i = findAt; i + 1 < num; i++) {
+		users[i] = users[i + 1];
+	}
+	num--;
+
+	rewriteUsersFile(users, num);
+	cout << "User successfully deleted.\n";
+
+	return 0;
+}
+void rewriteUsersFile(User *users, int num) {
+	ofstream fout(USERS, ios::binary | ios::out);
+	fout.write((char*)&users[0], sizeof users[0] * num);
+	fout.close();
+}

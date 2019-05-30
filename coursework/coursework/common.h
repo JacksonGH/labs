@@ -7,6 +7,9 @@
 #include <regex>
 #include <fstream>
 
+#include <algorithm>
+#include <iterator>
+
 using namespace std;
 
 const string USERS = "D://users.txt";
@@ -21,6 +24,11 @@ const string ROLE_USER_NAME = "user";
 const int ROLE_SUPER_ADMIN_VALUE = 2;
 const int ROLE_ADMIN_VALUE = 1;
 const int ROLE_USER_VALUE = 0;
+
+const string AVAILABLE_ROLES[] = {
+	ROLE_ADMIN_NAME,
+	ROLE_USER_NAME
+};
 
 const string HAS_ACCESS = "has access";
 const string HAS_NOT_ACCESS = "hasn't access";

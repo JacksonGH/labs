@@ -92,32 +92,10 @@ int registerUser(User *user) {
 }
 void getLoginAndPass(User *user) {
 	cout << "Enter login:\n";
-	do {
-		cin.getline(user->login, sizeof user->login);
-	} while (!isValidLogin(user->login));
+	strcpy(user->login, getLogin());
 
-	char t, *pass = new char[MAX_STR_SIZE];
 	cout << "Enter password:\n";
-	do {
-		for (int i = 0;;) {
-			t = _getch();
-			if (t >= 'a' && t <= 'z' || t >= 'A' && t <= 'Z' || t >= '0' && t <= '9' || t == '_') {
-				pass[i++] = t;
-				cout << "*";
-			}
-			if (t == '\b' &&  i >= 1) {
-				cout << "\b \b";
-				i--;
-			}
-			if (t == '\r') {
-				pass[i] = '\0';
-				break;
-			}
-		}
-		cout << '\n';
-	} while (!isValidPass(pass));
-	hash <string> hash;
-	user->pass = hash(pass + SALT);
+	user->pass = getPass();
 }
 void insertUser(User *user) {
 	ofstream fadd(USERS, ios::binary | ios::app);

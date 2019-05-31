@@ -3,7 +3,7 @@
 
 int main()
 {
-	//add workers 
+	//add workers
 	/*if (workersFixture() == 0) cout << "Succeesss";
 	system("pause");*/
 
@@ -22,17 +22,6 @@ int main()
 	strcpy(user->login, "MAIN_ADMIN");
 	hash <string> hash;
 	user->pass = hash("admin" + SALT);
-
-	/*bool a = find(begin(AVAILABLE_ROLES), end(AVAILABLE_ROLES), "user");
-
-	bool b = end(AVAILABLE_ROLES);
-
-	bool d = find(begin(AVAILABLE_ROLES), end(AVAILABLE_ROLES), "user") != end(AVAILABLE_ROLES);
-
-	int c = 1;*/
-
-	//new module
-	//addUser(user->role);
 
 	//modules
 	while (mainApp(user));

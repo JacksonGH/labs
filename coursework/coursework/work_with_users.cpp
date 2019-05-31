@@ -469,3 +469,30 @@ void rewriteUsersFile(User *users, int num) {
 	fout.write((char*)&users[0], sizeof users[0] * num);
 	fout.close();
 }
+int enableUser() {
+	User user;
+	cout << "Enter login:\n";
+	strcpy(user.login, getLogin());
+
+	int num;
+	User *users = new User[MAX_ARRAY_SIZE];
+	readAllUsers(users, num);
+
+	int findAt = checkUserLogin(users, num, user);
+	if (findAt < 0) {
+		cout << "User with this login not found.\n";
+		return 1;
+	}
+	system("cls");
+
+	if (user.access == AVAILABLE) {
+		cout << "User " << HAS_ACCESS << " to the resource.\n";
+		return 1;
+	}
+
+	user.access = AVAILABLE;
+	updateUserInfo(user, findAt);
+	cout << "Successfully changed user access.\n";
+	
+	return 0;
+}

@@ -231,6 +231,7 @@ int adminAppUsers(User *user, int &choice) {
 			" 2.view all data about users\n"
 			" 3.edit user\n"
 			" 4.remove user\n"
+			" 5.get user access to resource\n"
 			" 6.search data about workers\n"
 			" 7.sort data about workers\n"
 			" 0.back\n";
@@ -251,6 +252,9 @@ int adminAppUsers(User *user, int &choice) {
 			break;
 		case 4:
 			deleteUser();
+			break;
+		case 5:
+			enableUser();
 			break;
 		case 6:
 			do {

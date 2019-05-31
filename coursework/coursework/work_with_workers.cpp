@@ -612,11 +612,14 @@ int deleteWorker() {
 		return 1;
 	}
 
-	for (int i = findAt; i + 1 < num; i++) {
-		workers[i] = workers[i + 1];
+	system("cls");
+	coutWorker(worker);
+	if (!confirmDelete()) {
+		cout << "Deleted of worker canceled.\n";
+		return 0;
 	}
-	num--;
 
+	deleteWorkerInArray(workers, num, findAt);
 	rewriteWorkersFile(workers, num);
 	cout << "Worker info successfully deleted.\n";
 
@@ -698,4 +701,10 @@ FIO getStructFromStr(char *fioStr) {
 		strtok(NULL, " ");
 
 	return fio;
+}
+void deleteWorkerInArray(Worker *workers, int &num, int findAt) {
+	for (int i = findAt; i + 1 < num; i++) {
+		workers[i] = workers[i + 1];
+	}
+	num--;
 }

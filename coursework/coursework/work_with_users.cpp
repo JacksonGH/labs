@@ -454,11 +454,14 @@ int deleteUser() {
 		return 1;
 	}
 
-	for (int i = findAt; i + 1 < num; i++) {
-		users[i] = users[i + 1];
+	system("cls");
+	coutUser(user);
+	if (!confirmDelete()) {
+		cout << "Deleted of user canceled.\n";
+		return 0;
 	}
-	num--;
 
+	deleteUserInArray(users, num, findAt);
 	rewriteUsersFile(users, num);
 	cout << "User successfully deleted.\n";
 
@@ -495,4 +498,10 @@ int enableUser() {
 	cout << "Successfully changed user access.\n";
 	
 	return 0;
+}
+void deleteUserInArray(User *users, int &num, int findAt) {
+	for (int i = findAt; i + 1 < num; i++) {
+		users[i] = users[i + 1];
+	}
+	num--;
 }

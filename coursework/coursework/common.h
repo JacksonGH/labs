@@ -41,6 +41,9 @@ const int CONFIRM = 1;
 const int EDIT = 2;
 const int CANCEL = 3;
 
+const string YES = "yes";
+const string NO = "no";
+
 struct User
 {
 	char login[MAX_STR_SIZE];
@@ -53,4 +56,6 @@ int readIntNum();
 double readDoubleNum();
 int readPosIntNum();
 double readPosDoubleNum();
+
 void doPauseAndCls();
+bool confirmDelete();

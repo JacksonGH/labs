@@ -17,6 +17,7 @@ int checkUserLogin(User *, int &, User &);
 User editEnterUser(User);
 void updateUserInfo(User, int);
 void rewriteUsersFile(User *, int);
+void deleteUserInArray(User *users, int &num, int findAt);
 int enableUser();
 
 char *getLogin();

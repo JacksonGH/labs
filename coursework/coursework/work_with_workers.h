@@ -36,6 +36,7 @@ struct FIO {
 
 void updateWorkerInfo(Worker, int);
 void rewriteWorkersFile(Worker *, int);
+void deleteWorkerInArray(Worker *, int &, int);
 int addWorker();
 Worker editEnterWorker(Worker);
 void viewAllWorkers();

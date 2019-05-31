@@ -58,3 +58,13 @@ void doPauseAndCls() {
 	_getch();  _getch();
 	system("cls");
 }
+bool confirmDelete() {
+	cout << "Do you want to delete(options: yes/no)?\n";
+
+	string confirm;
+	do {
+		getline(cin, confirm);
+	} while (confirm != YES && confirm != NO);
+
+	return confirm == YES;
+}

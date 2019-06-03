@@ -68,3 +68,6 @@ bool confirmDelete() {
 
 	return confirm == YES;
 }
+bool checkCan(int yourRole, int changedUaerRole) {
+	return yourRole > changedUaerRole;
+}

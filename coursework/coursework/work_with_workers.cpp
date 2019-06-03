@@ -565,7 +565,7 @@ int editWorker() {
 			break;
 		}
 		else if (choice == CANCEL) {
-			cout << "Red worker canceled.\n";
+			cout << "Edit worker canceled.\n";
 			return 0;
 		}
 	}

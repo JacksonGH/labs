@@ -248,13 +248,13 @@ int adminAppUsers(User *user, int &choice) {
 			viewAllUsers();
 			break;
 		case 3:
-			editUser();
+			editUser(user);
 			break;
 		case 4:
-			deleteUser();
+			deleteUser(user);
 			break;
 		case 5:
-			enableUser();
+			enableUser(user);
 			break;
 		case 6:
 			do {

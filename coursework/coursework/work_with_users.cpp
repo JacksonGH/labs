@@ -261,7 +261,7 @@ string getRoleNameFromValue(int role) {
 		throw new exception("Unknown option.\n");
 	}
 }
-int editUser() {
+int editUser(User *authUser) {
 	int num;
 	User *users = new User[MAX_ARRAY_SIZE];
 	readAllUsers(users, num);
@@ -276,6 +276,12 @@ int editUser() {
 		cout << "User with this login not found.\n";
 		return 1;
 	}
+
+	if (! checkCan(authUser->role, user.role)) {
+		cout << "You can't change info of this user.\n";
+		return 1;
+	}
+
 	system("cls");
 
 	int choice;
@@ -291,13 +297,13 @@ int editUser() {
 
 		if (choice == EDIT) {
 			changed = true;
-			user = editEnterUser(user);
+			user = editEnterUser(user, authUser);
 		}
 		else if (choice == CONFIRM) {
 			break;
 		}
 		else if (choice == CANCEL) {
-			cout << "Red user canceled.\n";
+			cout << "Edit user canceled.\n";
 			return 0;
 		}
 	}
@@ -332,7 +338,7 @@ int checkUserLogin(User *users, int &num, User &user) {
 	}
 	return findAt;
 }
-User editEnterUser(User user) {
+User editEnterUser(User user, User *authUser) {
 	int choice;
 	while (1) {
 		coutUser(user);
@@ -364,10 +370,20 @@ User editEnterUser(User user) {
 			system("cls");
 			break;
 		case 4:
+		{
 			cout << "Enter role(admin or user):\n";
-			user.role = getRole();
+			int role = getRole();
+
+			if (! checkCan(authUser->role, role)) {
+				cout << "You can't change user role to this role.\n";
+				doPauseAndCls();
+				break;
+			}
+
+			user.role = role;
 			system("cls");
 			break;
+		}
 		default:
 			cout << "Unknown option: " << choice << '\n';
 		}
@@ -438,7 +454,7 @@ int getRoleValueFromName(string role) {
 	
 	throw new exception("Unknown option.\n");
 }
-int deleteUser() {
+int deleteUser(User *authUser) {
 	int num;
 	User *users = new User[MAX_ARRAY_SIZE];
 	readAllUsers(users, num);
@@ -454,7 +470,13 @@ int deleteUser() {
 		return 1;
 	}
 
+	if (! checkCan(authUser->role, user.role)) {
+		cout << "You can't delete user with this role.\n";
+		return 1;
+	}
+
 	system("cls");
+
 	coutUser(user);
 	if (!confirmDelete()) {
 		cout << "Deleted of user canceled.\n";
@@ -472,7 +494,7 @@ void rewriteUsersFile(User *users, int num) {
 	fout.write((char*)&users[0], sizeof users[0] * num);
 	fout.close();
 }
-int enableUser() {
+int enableUser(User *authUser) {
 	User user;
 	cout << "Enter login:\n";
 	strcpy(user.login, getLogin());
@@ -486,6 +508,12 @@ int enableUser() {
 		cout << "User with this login not found.\n";
 		return 1;
 	}
+
+	if (! checkCan(authUser->role, user.role)) {
+		cout << "You can't enable this user\n";
+		return 1;
+	}
+
 	system("cls");
 
 	if (user.access == AVAILABLE) {

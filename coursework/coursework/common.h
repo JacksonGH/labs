@@ -59,3 +59,4 @@ double readPosDoubleNum();
 
 void doPauseAndCls();
 bool confirmDelete();
+bool checkCan(int, int);

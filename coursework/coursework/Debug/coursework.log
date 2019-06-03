@@ -1,3 +1,14 @@
-﻿  work_with_users.cpp
-c:\users\gacks\source\repos\coursework\coursework\work_with_users.cpp(404): warning C4172: возвращение адреса локальной или временной переменной : login
+﻿  auth.cpp
+  modules.cpp
+  source.cpp
+  work_with_users.cpp
+  work_with_workers.cpp
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(299): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(471): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(472): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  Создание кода...
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(309): warning C4172: возвращение адреса локальной или временной переменной : from_str
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(499): warning C4172: возвращение адреса локальной или временной переменной : fio
+c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(511): warning C4172: возвращение адреса локальной или временной переменной : date
+c:\users\gacks\source\repos\coursework\coursework\work_with_users.cpp(447): warning C4172: возвращение адреса локальной или временной переменной : login
   coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

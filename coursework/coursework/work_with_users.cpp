@@ -36,22 +36,22 @@ void coutUsers(User *users, int num) {
 		cout << setw(20) << users[i].login
 			<< setw(10) << (
 			(users[i].role == ROLE_ADMIN_VALUE) ? ROLE_ADMIN_NAME : ROLE_USER_NAME
-			)
+				)
 			<< setw(10) << (
 			(users[i].access == AVAILABLE) ? HAS_ACCESS : HAS_NOT_ACCESS
-			)
-			 << '\n';
+				)
+			<< '\n';
 	}
 }
 void coutUser(User user) {
 	cout << setw(20) << left << user.login
 		<< setw(10) << (
 		(user.role == ROLE_ADMIN_VALUE) ? ROLE_ADMIN_NAME : ROLE_USER_NAME
-		)
+			)
 		<< setw(10) << (
 		(user.access == AVAILABLE) ? HAS_ACCESS : HAS_NOT_ACCESS
-		)
-	<< '\n' << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
+			)
+		<< '\n' << setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 }
 int addUser(int access) {
 	User *user = new User;
@@ -80,7 +80,26 @@ int addUser(int access) {
 
 	return 0;
 }
-void searchUsers(User *users, int num, int choice) {
+void searchUsers(int &choice) {
+	do {
+		cout << "Choose parameter for search:\n"
+			" 1.login\n"
+			" 2.access\n"
+			" 3.role\n"
+			" 0.back\n";
+		choice = readIntNum();
+		system("cls");
+	} while (choice < 0 || choice > 3);
+
+	if (choice != 0) {
+		int num;
+		User *users = new User[MAX_ARRAY_SIZE];
+		readAllUsers(users, num);
+
+		logicSearchUsers(users, num, choice);
+	}
+}
+void logicSearchUsers(User *users, int num, int choice) {
 	bool flag = false;
 
 	switch (choice) {
@@ -150,8 +169,28 @@ void searchUsers(User *users, int num, int choice) {
 	}
 	}
 }
-void sortUsers(User *users, int num, int choice) {
-	int sortFrom;
+void sortUsers(int &choice) {
+	do {
+		cout << "Choose parameter for sort:\n"
+			" 1.login\n"
+			" 2.access\n"
+			" 3.role\n"
+			" 0.back\n";
+		choice = readIntNum();
+		system("cls");
+	} while (choice < 0 || choice > 3);
+
+	if (choice == EXIT_OPTION)
+		return;
+
+	int num;
+	User *users = new User[MAX_ARRAY_SIZE];
+	readAllUsers(users, num);
+
+	logicSortUsers(users, num, choice);
+}
+void logicSortUsers(User *users, int num, int &sortFrom) {
+	int sortBy = sortFrom;
 	do {
 		cout << "Enter from sort:\n"
 			" 1.[1-9][a-z]\n"
@@ -159,9 +198,13 @@ void sortUsers(User *users, int num, int choice) {
 			" 0.back\n";
 		sortFrom = readIntNum();
 	} while (sortFrom < 0 || sortFrom > 2);
+	system("cls");
+
+	if (sortFrom == EXIT_OPTION)
+		return;
 
 	bool flag;
-	switch (choice) {
+	switch (sortBy) {
 	case 1:
 	{
 		if (sortFrom == 1) {
@@ -277,7 +320,7 @@ int editUser(User *authUser) {
 		return 1;
 	}
 
-	if (! checkCan(authUser->role, user.role)) {
+	if (!checkCan(authUser->role, user.role)) {
 		cout << "You can't change info of this user.\n";
 		return 1;
 	}
@@ -374,7 +417,7 @@ User editEnterUser(User user, User *authUser) {
 			cout << "Enter role(admin or user):\n";
 			int role = getRole();
 
-			if (! checkCan(authUser->role, role)) {
+			if (!checkCan(authUser->role, role)) {
 				cout << "You can't change user role to this role.\n";
 				doPauseAndCls();
 				break;
@@ -399,7 +442,7 @@ char *getLogin() {
 	char login[MAX_STR_SIZE];
 	do {
 		cin.getline(login, sizeof login);
-	} while (! isValidLogin(login));
+	} while (!isValidLogin(login));
 
 	return login;
 }
@@ -447,11 +490,11 @@ int getRole() {
 int getRoleValueFromName(string role) {
 	if (role == ROLE_USER_NAME)
 		return ROLE_USER_VALUE;
-	else if(role == ROLE_ADMIN_NAME)
+	else if (role == ROLE_ADMIN_NAME)
 		return ROLE_ADMIN_VALUE;
 	else if (role == ROLE_SUPER_ADMIN_NAME)
 		return ROLE_SUPER_ADMIN_VALUE;
-	
+
 	throw new exception("Unknown option.\n");
 }
 int deleteUser(User *authUser) {
@@ -470,7 +513,7 @@ int deleteUser(User *authUser) {
 		return 1;
 	}
 
-	if (! checkCan(authUser->role, user.role)) {
+	if (!checkCan(authUser->role, user.role)) {
 		cout << "You can't delete user with this role.\n";
 		return 1;
 	}
@@ -509,7 +552,7 @@ int enableUser(User *authUser) {
 		return 1;
 	}
 
-	if (! checkCan(authUser->role, user.role)) {
+	if (!checkCan(authUser->role, user.role)) {
 		cout << "You can't enable this user\n";
 		return 1;
 	}
@@ -524,7 +567,7 @@ int enableUser(User *authUser) {
 	user.access = AVAILABLE;
 	updateUserInfo(user, findAt);
 	cout << "Successfully changed user access.\n";
-	
+
 	return 0;
 }
 void deleteUserInArray(User *users, int &num, int findAt) {

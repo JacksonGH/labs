@@ -39,47 +39,11 @@ int userApp(User *user) {
 			break;
 		}
 		case 3:
-		{
-			do {
-				cout << "Choose parameter for search:\n"
-					" 1.personal number\n"
-					" 2.date\n"
-					" 3.fio\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				Worker *workers = new Worker[MAX_ARRAY_SIZE];
-				readAllWorkers(workers, num);
-
-				searchWorkers(workers, num, choice);
-			}
+			searchWorkers(choice);
 			break;
-		}
 		case 4:
-		{
-			do {
-				cout << "Choose parameter for sort:\n"
-					" 1.personal number\n"
-					" 2.date\n"
-					" 3.fio\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				Worker *workers = new Worker[MAX_ARRAY_SIZE];
-				readAllWorkers(workers, num);
-
-				sortWorkers(workers, num, choice);
-			}
+			sortWorkers(choice);
 			break;
-		}
 		case 5:
 		{
 			int choice;
@@ -91,7 +55,8 @@ int userApp(User *user) {
 			cout << "Unknown option: " << choice << '\n';
 		}
 
-		doPauseAndCls();
+		if (choice != EXIT_OPTION)
+			doPauseAndCls();
 	}
 }
 int adminApp(User *user) {
@@ -175,52 +140,19 @@ int adminAppWorkers(User *user, int &choice) {
 			break;
 		}
 		case 6:
-		{
-			do {
-				cout << "Choose parameter for search:\n"
-					" 1.personal number\n"
-					" 2.date\n"
-					" 3.fio\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				Worker *workers = new Worker[MAX_ARRAY_SIZE];
-				readAllWorkers(workers, num);
-
-				searchWorkers(workers, num, choice);
-			}
+			searchWorkers(choice);
 			break;
-		}
 		case 7:
 		{
-			do {
-				cout << "Choose parameter for sort:\n"
-					" 1.personal number\n"
-					" 2.date\n"
-					" 3.fio\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				Worker *workers = new Worker[MAX_ARRAY_SIZE];
-				readAllWorkers(workers, num);
-
-				sortWorkers(workers, num, choice);
-			}
+			sortWorkers(choice);
 			break;
 		}
 		default:
 			cout << "Unknown option: " << choice << '\n';
 		}
 
-		doPauseAndCls();
+		if (choice != EXIT_OPTION)
+			doPauseAndCls();
 	}
 }
 int adminAppUsers(User *user, int &choice) {
@@ -257,47 +189,16 @@ int adminAppUsers(User *user, int &choice) {
 			enableUser(user);
 			break;
 		case 6:
-			do {
-				cout << "Choose parameter for search:\n"
-					" 1.login\n"
-					" 2.access\n"
-					" 3.role\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				User *users = new User[MAX_ARRAY_SIZE];
-				readAllUsers(users, num);
-
-				searchUsers(users, num, choice);
-			}
+			searchUsers(choice);
 			break;
 		case 7:
-			do {
-				cout << "Choose parameter for sort:\n"
-					" 1.login\n"
-					" 2.access\n"
-					" 3.role\n"
-					" 0.back\n";
-				choice = readIntNum();
-				system("cls");
-			} while (choice < 0 || choice > 3);
-
-			if (choice != 0) {
-				int num;
-				User *users = new User[MAX_ARRAY_SIZE];
-				readAllUsers(users, num);
-
-				sortUsers(users, num, choice);
-			}
+			sortUsers(choice);
 			break;
 		default:
 			cout << "Unknown option: " << choice << '\n';
 		}
 
-		doPauseAndCls();
+		if (choice != EXIT_OPTION)
+			doPauseAndCls();
 	}
 }

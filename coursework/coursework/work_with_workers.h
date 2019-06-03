@@ -41,8 +41,11 @@ int addWorker();
 Worker editEnterWorker(Worker);
 void viewAllWorkers();
 void calcAndCoutSalariesForRange(Worker *, int, char *);
-void searchWorkers(Worker *, int, int);
-void sortWorkers(Worker *, int, int);
+void searchWorkers(int &);
+void sortWorkers(int &);
+
+void logicSearchWorkers(Worker *, int, int);
+void logicSortWorkers(Worker *, int, int &);
 
 int editWorker();
 int deleteWorker();

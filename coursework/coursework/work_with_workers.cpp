@@ -48,7 +48,27 @@ void calcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) 
 			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 	}
 }
-void searchWorkers(Worker *workers, int num, int choice) {
+void searchWorkers(int &choice) {
+	do {
+		cout << "Choose parameter for search:\n"
+			" 1.personal number\n"
+			" 2.date\n"
+			" 3.fio\n"
+			" 0.back\n";
+		choice = readIntNum();
+		system("cls");
+	} while (choice < 0 || choice > 3);
+
+	if (choice == 0)
+		return;
+
+	int num;
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workers, num);
+
+	logicSearchWorkers(workers, num, choice);
+}
+void logicSearchWorkers(Worker *workers, int num, int choice) {
 	bool flag = false;
 
 	switch (choice) {
@@ -108,8 +128,28 @@ void searchWorkers(Worker *workers, int num, int choice) {
 	}
 	}
 }
-void sortWorkers(Worker *workers, int num, int choice) {
-	int sortFrom;
+void sortWorkers(int &choice) {
+	do {
+		cout << "Choose parameter for sort:\n"
+			" 1.personal number\n"
+			" 2.date\n"
+			" 3.fio\n"
+			" 0.back\n";
+		choice = readIntNum();
+		system("cls");
+	} while (choice < 0 || choice > 3);
+
+	if (choice == EXIT_OPTION)
+		return;
+
+	int num;
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workers, num);
+
+	logicSortWorkers(workers, num, choice);
+}
+void logicSortWorkers(Worker *workers, int num, int &sortFrom) {
+	int sortBy = sortFrom;
 	do {
 		cout << "Enter from sort:\n"
 			" 1.[1-9][a-z]\n"
@@ -117,9 +157,13 @@ void sortWorkers(Worker *workers, int num, int choice) {
 			" 0.back\n";
 		sortFrom = readIntNum();
 	} while (sortFrom < 0 || sortFrom > 2);
+	system("cls");
+
+	if (sortFrom == EXIT_OPTION)
+		return;
 
 	bool flag;
-	switch (choice) {
+	switch (sortBy) {
 	case 1:
 	{
 		if (sortFrom == 1) {

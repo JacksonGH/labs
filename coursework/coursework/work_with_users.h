@@ -8,10 +8,13 @@ void coutUsers(User *, int);
 void coutUser(User);
 
 int addUser(int);
-void searchUsers(User *, int, int);
-void sortUsers(User *, int, int);
+void searchUsers(int &);
+void sortUsers(int &);
 int editUser(User *);
 int deleteUser(User *);
+
+void logicSearchUsers(User *, int, int);
+void logicSortUsers(User *, int, int &);
 
 int checkUserLogin(User *, int &, User &);
 User editEnterUser(User, User *);

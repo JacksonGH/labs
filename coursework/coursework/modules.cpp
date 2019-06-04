@@ -26,18 +26,8 @@ int userApp(User *user) {
 			viewAllWorkers();
 			break;
 		case 2:
-		{
-			cout << "Input date range(valid ranges: 1.2, 0.18, 2.0)\n";
-			char range[DATE_SIZE];
-			strcpy(range, getRange());
-
-			int num;
-			Worker *workers = new Worker[MAX_ARRAY_SIZE];
-			readAllWorkers(workers, num);
-
-			calcAndCoutSalariesForRange(workers, num, range);
+			calcAndCoutSalariesForRange();
 			break;
-		}
 		case 3:
 			searchWorkers(choice);
 			break;
@@ -127,18 +117,8 @@ int adminAppWorkers(User *user, int &choice) {
 			deleteWorker();
 			break;
 		case 5:
-		{
-			cout << "Input date range(valid ranges: 1.2, 0.18, 2.0)\n";
-			char range[DATE_SIZE];
-			strcpy(range, getRange());
-
-			int num;
-			Worker *workers = new Worker[MAX_ARRAY_SIZE];
-			readAllWorkers(workers, num);
-
-			calcAndCoutSalariesForRange(workers, num, range);
+			calcAndCoutSalariesForRange();
 			break;
-		}
 		case 6:
 			searchWorkers(choice);
 			break;

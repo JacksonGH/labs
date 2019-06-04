@@ -1,11 +1,2 @@
 ﻿  modules.cpp
-  source.cpp
-  work_with_workers.cpp
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(327): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(499): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(500): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-  Создание кода...
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(337): warning C4172: возвращение адреса локальной или временной переменной : from_str
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(527): warning C4172: возвращение адреса локальной или временной переменной : fio
-c:\users\gacks\source\repos\coursework\coursework\work_with_workers.cpp(539): warning C4172: возвращение адреса локальной или временной переменной : date
   coursework.vcxproj -> C:\Users\gacks\source\repos\coursework\Debug\coursework.exe

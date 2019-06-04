@@ -1,5 +1,16 @@
 #include "work_with_workers.h"
 
+void calcAndCoutSalariesForRange() {
+	cout << "Input date range(valid ranges: 1.2, 0.18, 2.0)\n";
+	char range[DATE_SIZE];
+	strcpy(range, getRange());
+
+	int num;
+	Worker *workers = new Worker[MAX_ARRAY_SIZE];
+	readAllWorkers(workers, num);
+
+	logicCalcAndCoutSalariesForRange(workers, num, range);
+}
 double getWorkerSalary(Worker worker) {
 	int overtime = 0;
 	if (worker.work_hours > OVERTIME_RANGE) {
@@ -9,7 +20,7 @@ double getWorkerSalary(Worker worker) {
 
 	return worker.rate * (1 - TAX / 100) * (worker.work_hours + overtime * 2);
 }
-void calcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) {
+void logicCalcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) {
 	Salary *salaries = new Salary[MAX_STR_SIZE];
 	int num_salaries = 0;
 
@@ -23,28 +34,41 @@ void calcAndCoutSalariesForRange(Worker *workers, int num_workers, char *range) 
 			if (salaries[j].pers_num == workers[i].pers_num) {
 				flag = true;
 				salaries[j].salary_per_range += getWorkerSalary(workers[i]);
+				if (atof(workers[i].date) > atof(salaries[j].date)) {
+					salaries[num_salaries].salary_per_month = getWorkerSalary(workers[i]);
+				}
+
 				break;
 			}
 		}
 
 		if (!flag) {
 			strcpy(salaries[num_salaries].fio, workers[i].fio);
+			strcpy(salaries[num_salaries].date, workers[i].date);
 			salaries[num_salaries].pers_num = workers[i].pers_num;
-			salaries[num_salaries].salary_per_month = OVERTIME_RANGE * workers[i].rate;
+			salaries[num_salaries].salary_per_month = getWorkerSalary(workers[i]);
 			salaries[num_salaries].salary_per_range += getWorkerSalary(workers[i]);
 			num_salaries++;
 		}
 	}
 
+	coutWorkersSalaries(salaries, num_salaries);
+}
+void coutWorkersSalaries(Salary *salaries, int num) {
+	if (num == 0) {
+		cout << "No data.\n";
+		return;
+	}
+
 	cout << left << setw(18) << "Personal number"
-		<< setw(18) << "Salary per month"
+		<< setw(32) << "For month: salary per month"
 		<< setw(18) << "Salary per range" << '\n'
 		<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
-	for (int i = 0; i < num_salaries; i++) {
+	for (int i = 0; i < num; i++) {
 		cout << setw(80) << left << salaries[i].fio << '\n'
 			<< setw(18) << salaries[i].pers_num
-			<< setw(18) << salaries[i].salary_per_month
-			<< setw(18) << salaries[i].salary_per_range << '\n'
+			<< salaries[i].date << ": " << setw(23) << salaries[i].salary_per_month
+			<< setw(28) << salaries[i].salary_per_range << '\n'
 			<< setfill('-') << setw(80) << "" << setfill(' ') << '\n';
 	}
 }
@@ -69,29 +93,26 @@ void searchWorkers(int &choice) {
 	logicSearchWorkers(workers, num, choice);
 }
 void logicSearchWorkers(Worker *workers, int num, int choice) {
+	Worker *foundWorkers;
+
 	switch (choice) {
 	case 1:
-	{
-		Worker *foundWorkers = searchByPersNum(workers, num);
-		coutWorkers(foundWorkers, num);
+		foundWorkers = searchByPersNum(workers, num);
 
 		break;
-	}
 	case 2:
-	{
-		Worker *foundWorkers = searchByDate(workers, num);
-		coutWorkers(foundWorkers, num);
+		foundWorkers = searchByDate(workers, num);
 
 		break;
-	}
 	case 3:
-	{
-		Worker *foundWorkers = searchByFio(workers, num);
-		coutWorkers(foundWorkers, num);
+		foundWorkers = searchByFio(workers, num);
 
 		break;
+	default:
+		throw exception("Unknow option search workers.");
 	}
-	}
+
+	coutWorkers(foundWorkers, num);
 }
 Worker *searchByPersNum(Worker *workers, int &num) {
 	cout << "Enter personal number:\n";
@@ -194,6 +215,8 @@ void logicSortWorkers(Worker *workers, int num, int &sortFrom) {
 
 		break;
 	}
+	default:
+		throw exception("Unknow option in sort workers.");
 	}
 
 	coutWorkers(workers, num);
@@ -283,6 +306,11 @@ void viewAllWorkers() {
 	coutWorkers(workers, num);
 }
 void coutWorkers(Worker *workers, int num) {
+	if (num <= 0) {
+		cout << "No data.\n";
+		return;
+	}
+
 	cout << left << setw(18) << "Personal Number"
 		<< setw(10) << "Date"
 		<< setw(13) << "Work hours"

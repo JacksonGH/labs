@@ -28,6 +28,7 @@ bool readAllUsers(User *users, int &num) {
 void coutUsers(User *users, int num) {
 	if (num <= 0) {
 		cout << "No data.\n";
+		return;
 	}
 
 	cout << left << setw(20) << "Login"
@@ -62,16 +63,8 @@ int addUser(int access) {
 	getCredentials(user);
 
 	if (access == ROLE_SUPER_ADMIN_VALUE) {
-		string role;
 		cout << "Enter user role(available options: user or admin).\n";
-
-		do {
-			getline(cin, role);
-		} while (role != ROLE_ADMIN_NAME && role != ROLE_USER_NAME);
-
-		user->role = (role == ROLE_ADMIN_NAME)
-			? ROLE_ADMIN_VALUE
-			: ROLE_USER_VALUE;
+		int role = getRole();
 	}
 	else {
 		user->role = ROLE_USER_VALUE;
@@ -108,24 +101,30 @@ void logicSearchUsers(User *users, int num, int choice) {
 	case 1:
 	{
 		User foundUser = searchByLogin(users, num);
+		if (num == 0) {
+			cout << "No data.\n";
+			return;
+		}
 		coutUser(foundUser);
 
-		break;
+		return;
 	}
 	case 2:
 	{
 		User *foundUsers = searchByAccess(users, num);
 		coutUsers(foundUsers, num);
 
-		break;
+		return;
 	}
 	case 3:
 	{
 		User *foundUsers = searchByRole(users, num);
 		coutUsers(foundUsers, num);
 
-		break;
+		return;
 	}
+	default:
+		throw exception("Unknow option in search users.");
 	}
 }
 User searchByLogin(User *users, int &num) {
@@ -133,14 +132,18 @@ User searchByLogin(User *users, int &num) {
 	cout << "Enter login:\n";
 	cin.getline(login, sizeof login);
 
+	int foundNum = 0;
+
 	User foundUser;
 	for (int i = 0; i < num; i++) {
 		if (!strcmp(users[i].login, login)) {
 			foundUser = users[i];
+			foundNum++;
 			break;
 		}
 	}
 
+	num = foundNum;
 	return foundUser;
 }
 User *searchByAccess(User *users, int &num) {
@@ -227,6 +230,8 @@ void logicSortUsers(User *users, int num, int &sortFrom) {
 
 		break;
 	}
+	default:
+		throw exception("Unknow option in sort users.");
 	}
 
 	coutUsers(users, num);
@@ -321,7 +326,7 @@ string getRoleNameFromValue(int role) {
 	case ROLE_SUPER_ADMIN_VALUE:
 		return ROLE_SUPER_ADMIN_NAME;
 	default:
-		throw new exception("Unknown option.\n");
+		throw new exception("Unknown role value option.\n");
 	}
 }
 int editUser(User *authUser) {
@@ -515,7 +520,7 @@ int getRoleValueFromName(string role) {
 	else if (role == ROLE_SUPER_ADMIN_NAME)
 		return ROLE_SUPER_ADMIN_VALUE;
 
-	throw new exception("Unknown option.\n");
+	throw new exception("Unknown role name option.\n");
 }
 int deleteUser(User *authUser) {
 	int num;

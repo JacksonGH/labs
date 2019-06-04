@@ -14,11 +14,7 @@ int auth(int &choice, User *user) {
 		case LOGIN:
 			return loginUser(user);
 		case REGISTER: 
-		{
-			int res = registerUser(user);
-			system("cls");//doPauseAndCls();
-			return res;
-		}
+			return registerUser(user);
 		case EXIT_OPTION:
 			return EXIT_OPTION;
 		}

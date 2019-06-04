@@ -23,8 +23,9 @@ struct Worker {
 
 struct Salary {
 	char fio[MAX_STR_SIZE];
+	char date[DATE_SIZE];
 	int pers_num;
-	double salary_per_month;
+	double salary_per_month;//current salary for normal time
 	double salary_per_range = 0;
 };
 
@@ -40,7 +41,8 @@ void deleteWorkerInArray(Worker *, int &, int);
 int addWorker();
 Worker editEnterWorker(Worker);
 void viewAllWorkers();
-void calcAndCoutSalariesForRange(Worker *, int, char *);
+void calcAndCoutSalariesForRange();
+void logicCalcAndCoutSalariesForRange(Worker *, int, char *);
 void searchWorkers(int &);
 void sortWorkers(int &);
 
@@ -60,6 +62,7 @@ int deleteWorker();
 void insertWorker(Worker);
 bool readAllWorkers(Worker *, int &);
 
+void coutWorkersSalaries(Salary *, int);
 void coutWorkers(Worker *, int);
 void coutWorker(Worker);
 

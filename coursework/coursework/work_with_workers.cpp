@@ -69,72 +69,78 @@ void searchWorkers(int &choice) {
 	logicSearchWorkers(workers, num, choice);
 }
 void logicSearchWorkers(Worker *workers, int num, int choice) {
-	bool flag = false;
-
 	switch (choice) {
 	case 1:
-		searchByPersNum(workers, num);
-
-		break;
-	case 2:
-		searchByDate(workers, num);
-
-		break;
-	case 3:
-		searchByFio(workers, num);
+	{
+		Worker *foundWorkers = searchByPersNum(workers, num);
+		coutWorkers(foundWorkers, num);
 
 		break;
 	}
-}
-void searchByPersNum(Worker *workers, int num) {
-	bool flag = false;
+	case 2:
+	{
+		Worker *foundWorkers = searchByDate(workers, num);
+		coutWorkers(foundWorkers, num);
 
+		break;
+	}
+	case 3:
+	{
+		Worker *foundWorkers = searchByFio(workers, num);
+		coutWorkers(foundWorkers, num);
+
+		break;
+	}
+	}
+}
+Worker *searchByPersNum(Worker *workers, int &num) {
 	cout << "Enter personal number:\n";
 	int pers_num = readPosIntNum();
 
+	Worker *foundWorkers = new Worker[MAX_ARRAY_SIZE];
+	int foundNum = 0;
+
 	for (int i = 0; i < num; i++) {
 		if (workers[i].pers_num == pers_num) {
-			coutWorker(workers[i]);
-			flag = true;
+			foundWorkers[foundNum++] = workers[i];
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	num = foundNum;
+	return foundWorkers;
 }
-void searchByDate(Worker *workers, int num) {
-	bool flag = false;
+Worker *searchByDate(Worker *workers, int &num) {
 	char date[DATE_SIZE];
 
 	cout << "Enter date:\n";
 	strcpy(date, getWorkerDate());
 
+	Worker *foundWorkers = new Worker[MAX_ARRAY_SIZE];
+	int foundNum = 0;
+
 	for (int i = 0; i < num; i++) {
 		if (!strcmp(workers[i].date, date)) {
-			coutWorker(workers[i]);
-			flag = true;
+			foundWorkers[foundNum++] = workers[i];
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	num = foundNum;
+	return foundWorkers;
 }
-void searchByFio(Worker *workers, int num) {
-	bool flag = false;
+Worker *searchByFio(Worker *workers, int &num) {
 	FIO fio = getFioStructForSearch();
+
+	Worker *foundWorkers = new Worker[MAX_ARRAY_SIZE];
+	int foundNum = 0;
 
 	for (int i = 0; i < num; i++) {
 		if (likeFio(fio, getStructFromStr(workers[i].fio))) {
-			coutWorker(workers[i]);
-			flag = true;
+			foundWorkers[foundNum++] = workers[i];
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	num = foundNum;
+	return foundWorkers;
 }
 void sortWorkers(int &choice) {
 	do {

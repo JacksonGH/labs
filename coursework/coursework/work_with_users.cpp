@@ -26,6 +26,10 @@ bool readAllUsers(User *users, int &num) {
 	return 0;
 }
 void coutUsers(User *users, int num) {
+	if (num <= 0) {
+		cout << "No data.\n";
+	}
+
 	cout << left << setw(20) << "Login"
 		<< setw(10) << "Role"
 		<< setw(10) << "Access"
@@ -102,80 +106,74 @@ void searchUsers(int &choice) {
 void logicSearchUsers(User *users, int num, int choice) {
 	switch (choice) {
 	case 1:
-		searchByLogin(users, num);
-
-		break;
-	case 2:
-		searchByAccess(users, num);
-
-		break;
-	case 3:
-		searchByRole(users, num);
+	{
+		User foundUser = searchByLogin(users, num);
+		coutUser(foundUser);
 
 		break;
 	}
-}
-void searchByLogin(User *users, int num) {
-	bool flag = false;
+	case 2:
+	{
+		User *foundUsers = searchByAccess(users, num);
+		coutUsers(foundUsers, num);
 
+		break;
+	}
+	case 3:
+	{
+		User *foundUsers = searchByRole(users, num);
+		coutUsers(foundUsers, num);
+
+		break;
+	}
+	}
+}
+User searchByLogin(User *users, int &num) {
 	char login[MAX_STR_SIZE];
 	cout << "Enter login:\n";
 	cin.getline(login, sizeof login);
 
+	User foundUser;
 	for (int i = 0; i < num; i++) {
 		if (!strcmp(users[i].login, login)) {
-			coutUser(users[i]);
-			flag = true;
+			foundUser = users[i];
 			break;
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	return foundUser;
 }
-void searchByAccess(User *users, int num) {
-	bool flag = false;
-
-	int access;
+User *searchByAccess(User *users, int &num) {
 	cout << "Enter access(available options: 1(has access) or 0(no access)).\n";
-
-	do {
-		access = readPosIntNum();
-	} while (access != AVAILABLE && access != NOT_AVAILABLE);
+	int access = getAccess();
+	
+	User *foundUsers = new User[MAX_ARRAY_SIZE];
+	int foundNum = 0;
 
 	for (int i = 0; i < num; i++) {
 		if (access == users[i].access) {
-			coutUser(users[i]);
-			flag = true;
+			foundUsers[foundNum++] = users[i];
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	num = foundNum;
+	return foundUsers;
 }
-void searchByRole(User *users, int num) {
-	bool flag = false;
-
-	string option;
+User *searchByRole(User *users, int &num) {
 	cout << "Enter user role(available options: user or admin).\n";
+	int role = getRole();
 
-	do {
-		getline(cin, option);
-	} while (option != ROLE_ADMIN_NAME && option != ROLE_USER_NAME);
+	User *foundUsers = new User[MAX_ARRAY_SIZE];
+	int foundNum = 0;
 
-	int role = (option == ROLE_ADMIN_NAME ? 1 : 0);
 	for (int i = 0; i < num; i++) {
 		if (role == users[i].role) {
-			coutUser(users[i]);
-			flag = true;
+			foundUsers[foundNum++] = users[i];
 		}
 	}
 
-	if (!flag) {
-		cout << "Not found\n";
-	}
+	num = foundNum;
+	return foundUsers;
 }
 void sortUsers(int &choice) {
 	do {

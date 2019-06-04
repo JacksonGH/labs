@@ -18,9 +18,9 @@ int deleteUser(User *);
 void logicSearchUsers(User *, int, int);
 void logicSortUsers(User *, int, int &);
 
-void searchByLogin(User *, int);
-void searchByAccess(User *, int);
-void searchByRole(User *, int);
+User searchByLogin(User *, int &);
+User *searchByAccess(User *, int &);
+User *searchByRole(User *, int&);
 
 void sortByLogin(User *, int, int);
 void sortByAccess(User *, int, int);

@@ -73,59 +73,67 @@ void logicSearchWorkers(Worker *workers, int num, int choice) {
 
 	switch (choice) {
 	case 1:
-	{
-		cout << "Enter personal number:\n";
-		int pers_num = readPosIntNum();
-
-		for (int i = 0; i < num; i++) {
-			if (workers[i].pers_num == pers_num) {
-				coutWorker(workers[i]);
-				flag = true;
-			}
-		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
+		searchByPersNum(workers, num);
 
 		break;
-	}
 	case 2:
-	{
-		char date[DATE_SIZE];
+		searchByDate(workers, num);
 
-		cout << "Enter date:\n";
-		strcpy(date, getWorkerDate());
-
-		for (int i = 0; i < num; i++) {
-			if (!strcmp(workers[i].date, date)) {
-				coutWorker(workers[i]);
-				flag = true;
-			}
-		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
+		break;
+	case 3:
+		searchByFio(workers, num);
 
 		break;
 	}
-	case 3: {
-		FIO fio = getFioStructForSearch();
+}
+void searchByPersNum(Worker *workers, int num) {
+	bool flag = false;
 
-		for (int i = 0; i < num; i++) {
-			if (likeFio(fio, getStructFromStr(workers[i].fio))) {
-				coutWorker(workers[i]);
-				flag = true;
-			}
+	cout << "Enter personal number:\n";
+	int pers_num = readPosIntNum();
+
+	for (int i = 0; i < num; i++) {
+		if (workers[i].pers_num == pers_num) {
+			coutWorker(workers[i]);
+			flag = true;
 		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
-
-		break;
 	}
+
+	if (!flag) {
+		cout << "Not found\n";
+	}
+}
+void searchByDate(Worker *workers, int num) {
+	bool flag = false;
+	char date[DATE_SIZE];
+
+	cout << "Enter date:\n";
+	strcpy(date, getWorkerDate());
+
+	for (int i = 0; i < num; i++) {
+		if (!strcmp(workers[i].date, date)) {
+			coutWorker(workers[i]);
+			flag = true;
+		}
+	}
+
+	if (!flag) {
+		cout << "Not found\n";
+	}
+}
+void searchByFio(Worker *workers, int num) {
+	bool flag = false;
+	FIO fio = getFioStructForSearch();
+
+	for (int i = 0; i < num; i++) {
+		if (likeFio(fio, getStructFromStr(workers[i].fio))) {
+			coutWorker(workers[i]);
+			flag = true;
+		}
+	}
+
+	if (!flag) {
+		cout << "Not found\n";
 	}
 }
 void sortWorkers(int &choice) {
@@ -162,91 +170,105 @@ void logicSortWorkers(Worker *workers, int num, int &sortFrom) {
 	if (sortFrom == EXIT_OPTION)
 		return;
 
-	bool flag;
 	switch (sortBy) {
 	case 1:
 	{
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (workers[i].pers_num > workers[i + 1].pers_num) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (workers[i].pers_num < workers[i + 1].pers_num) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByPersNum(workers, num, sortFrom);
 
 		break;
 	}
 	case 2:
 	{
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (atof(workers[i].date) > atof(workers[i + 1].date)) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (atof(workers[i].date) < atof(workers[i + 1].date)) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByDate(workers, num, sortFrom);
 
 		break;
 	}
 	case 3: {
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (strcmp(workers[i].fio, workers[i + 1].fio) > 0) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (strcmp(workers[i].fio, workers[i + 1].fio) < 0) {
-						swap(workers[i], workers[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByFio(workers, num, sortFrom);
 
 		break;
 	}
 	}
 
 	coutWorkers(workers, num);
+}
+void sortByPersNum(Worker *workers, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (workers[i].pers_num > workers[i + 1].pers_num) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (workers[i].pers_num < workers[i + 1].pers_num) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+}
+void sortByDate(Worker *workers, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (atof(workers[i].date) > atof(workers[i + 1].date)) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (atof(workers[i].date) < atof(workers[i + 1].date)) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+}
+void sortByFio(Worker *workers, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (strcmp(workers[i].fio, workers[i + 1].fio) > 0) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (strcmp(workers[i].fio, workers[i + 1].fio) < 0) {
+					swap(workers[i], workers[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
 }
 void viewAllWorkers() {
 	Worker *workers = new Worker[MAX_ARRAY_SIZE];

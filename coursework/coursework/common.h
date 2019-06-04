@@ -6,13 +6,10 @@
 #include <iomanip>
 #include <regex>
 #include <fstream>
-
 #include <algorithm>
 #include <iterator>
 
 using namespace std;
-
-const string USERS = "D://users.txt";
 
 const int MAX_ARRAY_SIZE = 100;
 const int MAX_STR_SIZE = 81;

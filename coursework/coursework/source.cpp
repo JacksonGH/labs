@@ -18,7 +18,7 @@ int main()
 	//test
 	User *user = new User;
 	user->access = true;
-	user->role = ROLE_ADMIN_VALUE;// ROLE_SUPER_ADMIN_VALUE;
+	user->role = ROLE_SUPER_ADMIN_VALUE;
 	strcpy(user->login, "MAIN_ADMIN");
 	hash <string> hash;
 	user->pass = hash("admin" + SALT);

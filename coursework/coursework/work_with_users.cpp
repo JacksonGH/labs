@@ -100,73 +100,81 @@ void searchUsers(int &choice) {
 	}
 }
 void logicSearchUsers(User *users, int num, int choice) {
-	bool flag = false;
-
 	switch (choice) {
 	case 1:
-	{
-		char login[MAX_STR_SIZE];
-		cout << "Enter login:\n";
-		cin.getline(login, sizeof login);
-
-		for (int i = 0; i < num; i++) {
-			if (!strcmp(users[i].login, login)) {
-				coutUser(users[i]);
-				flag = true;
-				break;
-			}
-		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
+		searchByLogin(users, num);
 
 		break;
-	}
 	case 2:
-	{
-		int access;
-		cout << "Enter access(available options: 1(has access) or 0(no access)).\n";
+		searchByAccess(users, num);
 
-		do {
-			access = readPosIntNum();
-		} while (access != AVAILABLE && access != NOT_AVAILABLE);
-
-		for (int i = 0; i < num; i++) {
-			if (access == users[i].access) {
-				coutUser(users[i]);
-				flag = true;
-			}
-		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
+		break;
+	case 3:
+		searchByRole(users, num);
 
 		break;
 	}
-	case 3: {
-		string option;
-		cout << "Enter user role(available options: user or admin).\n";
+}
+void searchByLogin(User *users, int num) {
+	bool flag = false;
 
-		do {
-			getline(cin, option);
-		} while (option != ROLE_ADMIN_NAME && option != ROLE_USER_NAME);
+	char login[MAX_STR_SIZE];
+	cout << "Enter login:\n";
+	cin.getline(login, sizeof login);
 
-		int role = (option == ROLE_ADMIN_NAME ? 1 : 0);
-		for (int i = 0; i < num; i++) {
-			if (role == users[i].role) {
-				coutUser(users[i]);
-				flag = true;
-			}
+	for (int i = 0; i < num; i++) {
+		if (!strcmp(users[i].login, login)) {
+			coutUser(users[i]);
+			flag = true;
+			break;
 		}
-
-		if (!flag) {
-			cout << "Not found\n";
-		}
-
-		break;
 	}
+
+	if (!flag) {
+		cout << "Not found\n";
+	}
+}
+void searchByAccess(User *users, int num) {
+	bool flag = false;
+
+	int access;
+	cout << "Enter access(available options: 1(has access) or 0(no access)).\n";
+
+	do {
+		access = readPosIntNum();
+	} while (access != AVAILABLE && access != NOT_AVAILABLE);
+
+	for (int i = 0; i < num; i++) {
+		if (access == users[i].access) {
+			coutUser(users[i]);
+			flag = true;
+		}
+	}
+
+	if (!flag) {
+		cout << "Not found\n";
+	}
+}
+void searchByRole(User *users, int num) {
+	bool flag = false;
+
+	string option;
+	cout << "Enter user role(available options: user or admin).\n";
+
+	do {
+		getline(cin, option);
+	} while (option != ROLE_ADMIN_NAME && option != ROLE_USER_NAME);
+
+	int role = (option == ROLE_ADMIN_NAME ? 1 : 0);
+	for (int i = 0; i < num; i++) {
+		if (role == users[i].role) {
+			coutUser(users[i]);
+			flag = true;
+		}
+	}
+
+	if (!flag) {
+		cout << "Not found\n";
 	}
 }
 void sortUsers(int &choice) {
@@ -203,91 +211,105 @@ void logicSortUsers(User *users, int num, int &sortFrom) {
 	if (sortFrom == EXIT_OPTION)
 		return;
 
-	bool flag;
 	switch (sortBy) {
 	case 1:
 	{
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (strcmp(users[i].login, users[i + 1].login) > 0) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (strcmp(users[i].login, users[i + 1].login) < 0) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByLogin(users, num, sortFrom);
 
 		break;
 	}
 	case 2:
 	{
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (getAccessNameFromValue(users[i].access) > getAccessNameFromValue(users[i + 1].access)) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (getAccessNameFromValue(users[i].access) < getAccessNameFromValue(users[i + 1].access)) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByAccess(users, num, sortFrom);
 
 		break;
 	}
 	case 3: {
-		if (sortFrom == 1) {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (getRoleNameFromValue(users[i].role) > getRoleNameFromValue(users[i + 1].role)) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
-		else {
-			do {
-				flag = false;
-				for (int i = 0; i < num - 1; i++) {
-					if (getRoleNameFromValue(users[i].role) < getRoleNameFromValue(users[i + 1].role)) {
-						swap(users[i], users[i + 1]);
-						flag = true;
-					}
-				}
-			} while (flag);
-		}
+		sortByRole(users, num, sortFrom);
 
 		break;
 	}
 	}
 
 	coutUsers(users, num);
+}
+void sortByLogin(User *users, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (strcmp(users[i].login, users[i + 1].login) > 0) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (strcmp(users[i].login, users[i + 1].login) < 0) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+}
+void sortByAccess(User *users, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (getAccessNameFromValue(users[i].access) > getAccessNameFromValue(users[i + 1].access)) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (getAccessNameFromValue(users[i].access) < getAccessNameFromValue(users[i + 1].access)) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+}
+void sortByRole(User *users, int num, int sortFrom) {
+	bool flag;
+
+	if (sortFrom == 1) {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (getRoleNameFromValue(users[i].role) > getRoleNameFromValue(users[i + 1].role)) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
+	else {
+		do {
+			flag = false;
+			for (int i = 0; i < num - 1; i++) {
+				if (getRoleNameFromValue(users[i].role) < getRoleNameFromValue(users[i + 1].role)) {
+					swap(users[i], users[i + 1]);
+					flag = true;
+				}
+			}
+		} while (flag);
+	}
 }
 string getAccessNameFromValue(int access) {
 	return access == AVAILABLE ? HAS_ACCESS : HAS_NOT_ACCESS;

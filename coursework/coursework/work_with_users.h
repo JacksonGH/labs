@@ -2,6 +2,8 @@
 #include "common.h"
 #include "auth.h"
 
+const string USERS = "D://users.txt";
+
 void viewAllUsers();
 bool readAllUsers(User *, int &);
 void coutUsers(User *, int);
@@ -15,6 +17,14 @@ int deleteUser(User *);
 
 void logicSearchUsers(User *, int, int);
 void logicSortUsers(User *, int, int &);
+
+void searchByLogin(User *, int);
+void searchByAccess(User *, int);
+void searchByRole(User *, int);
+
+void sortByLogin(User *, int, int);
+void sortByAccess(User *, int, int);
+void sortByRole(User *, int, int);
 
 int checkUserLogin(User *, int &, User &);
 User editEnterUser(User, User *);

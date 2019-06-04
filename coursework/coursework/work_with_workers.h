@@ -47,6 +47,14 @@ void sortWorkers(int &);
 void logicSearchWorkers(Worker *, int, int);
 void logicSortWorkers(Worker *, int, int &);
 
+void searchByPersNum(Worker *workers, int num);
+void searchByDate(Worker *workers, int num);
+void searchByFio(Worker *workers, int num);
+
+void sortByPersNum(Worker *, int, int);
+void sortByDate(Worker *, int, int);
+void sortByFio(Worker *, int, int);
+
 int editWorker();
 int deleteWorker();
 void insertWorker(Worker);

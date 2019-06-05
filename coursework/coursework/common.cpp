@@ -71,3 +71,6 @@ bool confirmDelete() {
 bool checkCan(int yourRole, int changedUaerRole) {
 	return yourRole > changedUaerRole;
 }
+bool hasAccess(User *user) {
+	return user->access == AVAILABLE;
+}
